@@ -25,7 +25,7 @@ class ResponseHelper {
     private lateinit var popularMoviesApi: RetrofitInterfaces.PopularMoviesApi
     private lateinit var popularTvApi: RetrofitInterfaces.PopularTvApi
 
-    fun loadTrendingMovies(): LiveData<List<TrendingMovieResults>>? {
+    fun loadTrendingMovies(): LiveData<List<TrendingMovieResults>> {
         EspressoIdlingResource.increment()
         val movieList = MutableLiveData<List<TrendingMovieResults>>()
         trendingMoviesApi =

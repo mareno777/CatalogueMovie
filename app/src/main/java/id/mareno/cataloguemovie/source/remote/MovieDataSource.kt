@@ -5,10 +5,11 @@ import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
+import id.mareno.cataloguemovie.vo.Resource
 
 interface MovieDataSource {
 
-    fun getAllTrendingMovies(): LiveData<List<TrendingMovieResults>>
+    fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMovieResults>>>
 
     fun getAllTrendingTvs(): LiveData<List<TrendingTvResults>>
 
@@ -17,5 +18,6 @@ interface MovieDataSource {
     fun getAllPopularTvs(): LiveData<List<PopularTvResults>>
 
     fun getBookmarkedMovies(): LiveData<List<TrendingMovieResults>>
-    fun setMovieBookmark(movie: TrendingMovieResults?, state: Boolean)
+
+    fun setMovieBookmark(movie: TrendingMovieResults, state: Boolean)
 }

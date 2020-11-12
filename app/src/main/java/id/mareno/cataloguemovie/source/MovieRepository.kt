@@ -10,6 +10,7 @@ import id.mareno.cataloguemovie.source.local.LocalDataSource
 import id.mareno.cataloguemovie.source.remote.MovieDataSource
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
 import id.mareno.cataloguemovie.utils.AppExecutors
+import id.mareno.cataloguemovie.vo.Resource
 
 class MovieRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
@@ -31,29 +32,9 @@ class MovieRepository private constructor(
             }
     }
 
-    override fun getAllTrendingMovies(): LiveData<List<TrendingMovieResults>> {
-        val movieResults = MutableLiveData<List<TrendingMovieResults>>()
-        remoteDataSource.getAllTrendingMovies(object : RemoteDataSource.LoadTrendingMoviesCallback {
-            override fun onAllMoviesReceived(movieResponses: List<TrendingMovieResults>) {
-                val movieList = ArrayList<TrendingMovieResults>()
-                for (response in movieResponses) {
-                    val movie = TrendingMovieResults(
-                        response.genreIds,
-                        response.id,
-                        response.overview,
-                        response.posterPath,
-                        response.releaseDate,
-                        response.title,
-                        response.voteAverage,
-                        response.bookmarked
-                    )
-                    movieList.add(movie)
-                }
-                movieResults.postValue(movieList)
-
-            }
-        })
-        return movieResults
+    override fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMovieResults>>> {
+        // HARUS DIPERBAIKI
+        return MutableLiveData()
     }
 
     override fun getAllTrendingTvs(): LiveData<List<TrendingTvResults>> {
@@ -138,12 +119,11 @@ class MovieRepository private constructor(
         return movieResults
     }
 
-    override fun getBookmarkedMovies(): LiveData<List<TrendingMovieResults>>  =
+    override fun getBookmarkedMovies(): LiveData<List<TrendingMovieResults>> =
         localDataSource.getBookmarkedTrendingMovies()
 
-
-    override fun setMovieBookmark(movie: TrendingMovieResults?, state: Boolean) {
-        localDataSource.setMovieBookmark(movie, state)
+    override fun setMovieBookmark(movie: TrendingMovieResults, state: Boolean) {
+        TODO("Not yet implemented")
     }
 
 }
