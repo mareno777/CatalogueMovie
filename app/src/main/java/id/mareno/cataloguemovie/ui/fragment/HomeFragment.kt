@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.adapter.PopularMoviesAdapter
 import id.mareno.cataloguemovie.adapter.PopularTvShowsAdapter
@@ -14,6 +15,7 @@ import id.mareno.cataloguemovie.adapter.TrendingMovieAdapter
 import id.mareno.cataloguemovie.adapter.TrendingTvAdapter
 import id.mareno.cataloguemovie.viewmodel.HomeViewModel
 import id.mareno.cataloguemovie.viewmodel.ViewModelFactory
+import id.mareno.cataloguemovie.vo.Status
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
@@ -93,8 +95,19 @@ class HomeFragment : Fragment() {
         startTrendingMovieShimmer(true)
 
         homeViewModel.getTrendingMovies().observe(viewLifecycleOwner, { movies ->
-            startTrendingMovieShimmer(false)
-            trendingMovieAdapter.setData(movies)
+            if (movies != null) {
+                when (movies.status) {
+                    Status.LOADING -> startTrendingMovieShimmer(true)
+                    Status.SUCCESS -> {
+                        startTrendingMovieShimmer(false)
+                        trendingMovieAdapter.setData(movies.data)
+                        trendingMovieAdapter.notifyDataSetChanged()
+                    }
+                    Status.ERROR -> {
+                        Snackbar.make(rv_trending_movies_now, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
         })
 
     }

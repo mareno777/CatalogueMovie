@@ -8,19 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
 import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.MOVE_ACTIVITY
 import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.TRENDING_MOVIE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class TrendingMovieAdapter : RecyclerView.Adapter<TrendingMovieAdapter.TrendingViewHolder>() {
-    private val listMovies = ArrayList<TrendingMovieResults>()
+    private val listMovies = ArrayList<TrendingMoviesEntity>()
 
-    fun setData(movies: List<TrendingMovieResults>?) {
+    fun setData(movies: List<TrendingMoviesEntity>?) {
         if (movies == null) return
         listMovies.clear()
         listMovies.addAll(movies)
@@ -44,10 +45,14 @@ class TrendingMovieAdapter : RecyclerView.Adapter<TrendingMovieAdapter.TrendingV
     override fun getItemCount() = listMovies.size
 
     inner class TrendingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movie: TrendingMovieResults) {
+        fun bind(movie: TrendingMoviesEntity) {
             with(itemView) {
                 Glide.with(context)
                     .load("https://image.tmdb.org/t/p/original${movie.posterPath}")
+                    .apply(RequestOptions()
+                        .skipMemoryCache(true)
+                        .dontAnimate()
+                    )
                     .into(object : CustomTarget<Drawable>() {
                         override fun onResourceReady(
                             resource: Drawable,

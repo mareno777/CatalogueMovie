@@ -6,10 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import id.mareno.cataloguemovie.helper.DataConverter
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 
 @Database(
-    entities = [TrendingMovieResults::class],
+    entities = [TrendingMoviesEntity::class],
     version = 1,
     exportSchema = false
 )

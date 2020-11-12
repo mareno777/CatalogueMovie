@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import id.mareno.cataloguemovie.BuildConfig
 import id.mareno.cataloguemovie.helper.di.RetrofitBuilder
 import id.mareno.cataloguemovie.helper.di.RetrofitInterfaces
-import id.mareno.cataloguemovie.model.entities.SearchMovieModel
+import id.mareno.cataloguemovie.model.json.SearchMovieModel
 import id.mareno.cataloguemovie.model.responses.SearchMovieResults
 import retrofit2.Call
 import retrofit2.Callback

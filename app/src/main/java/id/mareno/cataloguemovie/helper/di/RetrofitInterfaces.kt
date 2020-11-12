@@ -1,7 +1,7 @@
 package id.mareno.cataloguemovie.helper.di
 
 import id.mareno.cataloguemovie.BuildConfig
-import id.mareno.cataloguemovie.model.entities.*
+import id.mareno.cataloguemovie.model.json.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

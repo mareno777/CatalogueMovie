@@ -2,39 +2,19 @@ package id.mareno.cataloguemovie.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 import id.mareno.cataloguemovie.source.remote.MovieDataSource
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
+import id.mareno.cataloguemovie.vo.Resource
 
 class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
     MovieDataSource {
 
-    override fun getAllTrendingMovies(): LiveData<List<TrendingMovieResults>> {
-        val movieResults = MutableLiveData<List<TrendingMovieResults>>()
-        remoteDataSource.getAllTrendingMovies(object : RemoteDataSource.LoadTrendingMoviesCallback {
-            override fun onAllMoviesReceived(movieResponses: List<TrendingMovieResults>) {
-                val movieList = ArrayList<TrendingMovieResults>()
-                for (response in movieResponses) {
-                    val movie = TrendingMovieResults(
-                        response.genreIds,
-                        response.id,
-                        response.overview,
-                        response.posterPath,
-                        response.releaseDate,
-                        response.title,
-                        response.voteAverage,
-                        response.bookmarked
-                    )
-                    movieList.add(movie)
-                }
-                movieResults.postValue(movieList)
-
-            }
-        })
-        return movieResults
+    override fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>> {
+        return MutableLiveData()
     }
 
     override fun getAllTrendingTvs(): LiveData<List<TrendingTvResults>> {
@@ -119,9 +99,8 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
         return movieResults
     }
 
-    override fun getBookmarkedMovies(): LiveData<List<TrendingMovieResults>> = MutableLiveData()
+    override fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
+        MutableLiveData()
 
-
-    override fun setMovieBookmark(movie: TrendingMovieResults?, state: Boolean) = Unit
-
+    override fun setTrendingMovieBookmark(movie: TrendingMoviesEntity, state: Boolean) {}
 }

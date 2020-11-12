@@ -12,7 +12,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.responses.*
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.responses.PopularMovieResults
+import id.mareno.cataloguemovie.model.responses.PopularTvResults
+import id.mareno.cataloguemovie.model.responses.SearchMovieResults
+import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.MOVE_ACTIVITY
 import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.POPULAR_MOVIE
 import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.POPULAR_TV
@@ -26,7 +30,7 @@ import java.util.*
 
 class DetailActivity : AppCompatActivity() {
 
-    private var trendingMovie: TrendingMovieResults? = null
+    private var trendingMovie: TrendingMoviesEntity? = null
     private var searchMovie: SearchMovieResults? = null
     private var trendingTvShow: TrendingTvResults? = null
     private var popularMovieResults: PopularMovieResults? = null
@@ -64,8 +68,6 @@ class DetailActivity : AppCompatActivity() {
             plot = trendingMovie?.overview
             genres = trendingMovie?.genreIds.toString()
 
-            val state = trendingMovie?.bookmarked
-            setBookmarkState(state)
         }
 
         if (searchMovie != null) {

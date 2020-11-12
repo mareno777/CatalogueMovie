@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import id.mareno.cataloguemovie.helper.di.RetrofitBuilder
 import id.mareno.cataloguemovie.helper.di.RetrofitInterfaces
-import id.mareno.cataloguemovie.model.entities.PopularMovieModel
-import id.mareno.cataloguemovie.model.entities.PopularTvModel
-import id.mareno.cataloguemovie.model.entities.TrendingMovieModel
-import id.mareno.cataloguemovie.model.entities.TrendingTvModel
+import id.mareno.cataloguemovie.model.json.PopularMovieModel
+import id.mareno.cataloguemovie.model.json.PopularTvModel
+import id.mareno.cataloguemovie.model.json.TrendingMovieModel
+import id.mareno.cataloguemovie.model.json.TrendingTvModel
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingMovieResults

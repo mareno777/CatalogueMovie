@@ -1,12 +1,12 @@
-package id.mareno.cataloguemovie.model.entities
+package id.mareno.cataloguemovie.model.json
 
 
 import com.google.gson.annotations.SerializedName
-import id.mareno.cataloguemovie.model.responses.SearchMovieResults
+import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 
-data class SearchMovieModel(
+data class TrendingMovieModel(
     var page: Int?,
-    var results: ArrayList<SearchMovieResults>?,
+    var results: ArrayList<TrendingMovieResults>?,
     @SerializedName("total_pages")
     var totalPages: Int?,
     @SerializedName("total_results")

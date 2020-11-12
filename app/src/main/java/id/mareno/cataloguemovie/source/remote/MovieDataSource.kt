@@ -1,15 +1,15 @@
 package id.mareno.cataloguemovie.source.remote
 
 import androidx.lifecycle.LiveData
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 import id.mareno.cataloguemovie.vo.Resource
 
 interface MovieDataSource {
 
-    fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMovieResults>>>
+    fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>>
 
     fun getAllTrendingTvs(): LiveData<List<TrendingTvResults>>
 
@@ -17,7 +17,7 @@ interface MovieDataSource {
 
     fun getAllPopularTvs(): LiveData<List<PopularTvResults>>
 
-    fun getBookmarkedMovies(): LiveData<List<TrendingMovieResults>>
+    fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>>
 
-    fun setMovieBookmark(movie: TrendingMovieResults, state: Boolean)
+    fun setTrendingMovieBookmark(movie: TrendingMoviesEntity, state: Boolean)
 }

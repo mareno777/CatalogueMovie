@@ -2,11 +2,13 @@ package id.mareno.cataloguemovie.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 import id.mareno.cataloguemovie.source.local.LocalDataSource
+import id.mareno.cataloguemovie.source.remote.ApiResponse
 import id.mareno.cataloguemovie.source.remote.MovieDataSource
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
 import id.mareno.cataloguemovie.utils.AppExecutors
@@ -32,9 +34,38 @@ class MovieRepository private constructor(
             }
     }
 
-    override fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMovieResults>>> {
-        // HARUS DIPERBAIKI
-        return MutableLiveData()
+    override fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>> {
+        return object : NetworkBoundResource<List<TrendingMoviesEntity>, List<TrendingMovieResults>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<TrendingMoviesEntity>> =
+                localDataSource.getAllTrendingMovies()
+
+
+            override fun shouldFetch(data: List<TrendingMoviesEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            override fun createCall(): LiveData<ApiResponse<List<TrendingMovieResults>>> =
+                remoteDataSource.getAllTrendingMovies()
+
+
+            override fun saveCallResult(data: List<TrendingMovieResults>) {
+                val movieList = ArrayList<TrendingMoviesEntity>()
+                for (response in data) {
+                    val movie = TrendingMoviesEntity(
+                        response.id,
+                        response.genreIds,
+                        response.overview,
+                        response.posterPath,
+                        response.releaseDate,
+                        response.title,
+                        response.voteAverage,
+                        false
+                    )
+                    movieList.add(movie)
+                }
+                localDataSource.insertTrendingMovies(movieList)
+            }
+
+        }.asLiveData()
     }
 
     override fun getAllTrendingTvs(): LiveData<List<TrendingTvResults>> {
@@ -119,11 +150,11 @@ class MovieRepository private constructor(
         return movieResults
     }
 
-    override fun getBookmarkedMovies(): LiveData<List<TrendingMovieResults>> =
+    override fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
         localDataSource.getBookmarkedTrendingMovies()
 
-    override fun setMovieBookmark(movie: TrendingMovieResults, state: Boolean) {
-        TODO("Not yet implemented")
+    override fun setTrendingMovieBookmark(movie: TrendingMoviesEntity, state: Boolean) {
+        appExecutors.diskIO().execute { localDataSource.setTrendingMovieBookmark(movie, state) }
     }
 
 }

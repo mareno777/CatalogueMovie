@@ -1,17 +1,17 @@
 package id.mareno.cataloguemovie.utils
 
-import id.mareno.cataloguemovie.model.entities.MovieEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 
 object DataDummy {
-    fun generateTrendingMovies(): List<MovieEntity> {
-        val movies = ArrayList<MovieEntity>()
+    /*
+    fun generateTrendingMovies(): List<TrendingMoviesEntity> {
+        val movies = ArrayList<TrendingMoviesEntity>()
 
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Brutus vs César",
                 "https://m.media-amazon.com/images/M/MV5BM2M2OGJiZTQtOWJkZi00YTdkLWFiOTMtNWZkZDhkOWQ5OTQ1XkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
                 "2020-09-18",
@@ -22,7 +22,7 @@ object DataDummy {
 
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Whipped",
                 "https://m.media-amazon.com/images/M/MV5BZTU4MGZlNDEtNDU4ZC00OTJiLWI3OWYtZmNjZjMwNzUwYWVmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
                 "2020-09-18",
@@ -32,7 +32,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Paramedic",
                 "https://m.media-amazon.com/images/M/MV5BNWE5ODJjNzUtMjk5YS00ZGVhLWI3NWQtNDc5MjU2ZWNhZjllXkEyXkFqcGdeQXVyMTM2Mzg4MA@@._V1_.jpg",
                 "2020-09-16",
@@ -42,7 +42,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Evil Takes Root",
                 "https://m.media-amazon.com/images/M/MV5BMTA1ODcwNmQtNDFjMC00ZWQxLWIwNjctZmU2Njc1ZjkwZTM1XkEyXkFqcGdeQXVyNjI2NDU5NDE@._V1_.jpg",
                 "2020-09-15",
@@ -52,7 +52,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Fear Pharm",
                 "https://m.media-amazon.com/images/M/MV5BYzQ5NzU4Y2MtNGYwOC00ZmY2LTk0NmMtOWM0ZjlmMmE4YWE2XkEyXkFqcGdeQXVyMTQ2OTU2OTQ@._V1_.jpg",
                 "2020-09-11",
@@ -62,7 +62,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Conjuring the Devil",
                 "https://m.media-amazon.com/images/M/MV5BMzM0MjY0YzItMjAwOS00MDdmLWJiM2UtZjQ2MmI0N2UwMDI5XkEyXkFqcGdeQXVyMTA0Mzg1Mjg@._V1_.jpg",
                 "2020-09-15",
@@ -72,7 +72,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Cats & Dogs 3: Paws Unite",
                 "https://m.media-amazon.com/images/M/MV5BYjgzODg2M2ItNzgwMS00ZDRjLWIwMTQtNmQxODE0MjAxY2RkXkEyXkFqcGdeQXVyMzAwNzMwNjY@._V1_.jpg",
                 "2020-09-15",
@@ -82,7 +82,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Intersect",
                 "https://m.media-amazon.com/images/M/MV5BZjUxOTljODQtNDAzMi00NzNkLWI5N2YtMDQ3Yjk0N2FkYmRmXkEyXkFqcGdeQXVyNjcxODY5OQ@@._V1_.jpg",
                 "2020-09-15",
@@ -92,7 +92,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Super Monsters: The New Class",
                 "https://m.media-amazon.com/images/M/MV5BMzFlY2U4MDUtMjE0Mi00ZjFmLTgwMzgtMGZlNDliYTE0ZjA3XkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
                 "2020-08-01",
@@ -102,7 +102,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Howling Village",
                 "https://m.media-amazon.com/images/M/MV5BMzYyOTI1YTctNTUzZi00YTRmLTlmMjctMWQxZmM1NWQ5MmRkXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg",
                 "2020-02-07",
@@ -112,7 +112,7 @@ object DataDummy {
             )
         )
         movies.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Coming",
                 "https://m.media-amazon.com/images/M/MV5BMDIwMDc5NzktNzRlNy00MDU2LWIwMTItOGVmOTcwN2Q3OTUwXkEyXkFqcGdeQXVyNzk5ODY5Njk@._V1_.jpg",
                 "2020-09-01",
@@ -124,11 +124,11 @@ object DataDummy {
         return movies
     }
 
-    fun generateTrendingTvs(): List<MovieEntity> {
-        val crimeMovieShow = ArrayList<MovieEntity>()
+    fun generateTrendingTvs(): List<TrendingMoviesEntity> {
+        val crimeMovieShow = ArrayList<TrendingMoviesEntity>()
 
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Enola Holmes",
                 "https://m.media-amazon.com/images/M/MV5BZjNkNzk0ZjEtM2M1ZC00MmMxLTlmOWEtNWRlZTc1ZTUyNzY4XkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg",
                 "2020-09-23",
@@ -138,7 +138,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Knives Out",
                 "https://m.media-amazon.com/images/M/MV5BMGUwZjliMTAtNzAxZi00MWNiLWE2NzgtZGUxMGQxZjhhNDRiXkEyXkFqcGdeQXVyNjU1NzU3MzE@._V1_.jpg",
                 "2019-11-27",
@@ -148,7 +148,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Ava",
                 "https://m.media-amazon.com/images/M/MV5BMTMzMTg1MjgtOWNhYy00NmZmLWExOTctMjA2OTZhZDFkNDhhXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg",
                 "2020-09-25",
@@ -158,7 +158,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Joker",
                 "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2019-10-04",
@@ -168,7 +168,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Zodiac",
                 "https://m.media-amazon.com/images/M/MV5BN2UwNDc5NmEtNjVjZS00OTI5LWE5YjctMWM3ZjBiZGYwMGI2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
                 "2007-03-02",
@@ -179,7 +179,7 @@ object DataDummy {
 
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Dark Knight",
                 "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
                 "2008-07-18",
@@ -189,7 +189,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Harley Quinn: Birds of Prey",
                 "https://m.media-amazon.com/images/M/MV5BMzQ3NTQxMjItODBjYi00YzUzLWE1NzQtZTBlY2Y2NjZlNzkyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2020-02-07",
@@ -199,7 +199,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Devil All the Time",
                 "https://m.media-amazon.com/images/M/MV5BZmE1NmVmN2EtMjZmZC00YzAyLWE4MWEtYjY5YmExMjUxODU1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2020-09-16",
@@ -209,7 +209,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Gentlemen",
                 "https://m.media-amazon.com/images/M/MV5BMTlkMmVmYjktYTc2NC00ZGZjLWEyOWUtMjc2MDMwMjQwOTA5XkEyXkFqcGdeQXVyNTI4MzE4MDU@._V1_.jpg",
                 "2020-01-24",
@@ -219,7 +219,7 @@ object DataDummy {
             )
         )
         crimeMovieShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "21 Bridges",
                 "https://m.media-amazon.com/images/M/MV5BYTg4YzEzNDQtZDAxOS00M2YyLTljZWEtNjk4YTc4NDM2NTBhXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2019-11-22",
@@ -232,11 +232,11 @@ object DataDummy {
         return crimeMovieShow
     }
 
-    fun generatePopularMovies(): List<MovieEntity> {
-        val popularMovie = ArrayList<MovieEntity>()
+    fun generatePopularMovies(): List<TrendingMoviesEntity> {
+        val popularMovie = ArrayList<TrendingMoviesEntity>()
 
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Mulan",
                 "https://m.media-amazon.com/images/M/MV5BNDliY2E1MjUtNzZkOS00MzJlLTgyOGEtZDg4MTI1NzZkMTBhXkEyXkFqcGdeQXVyNjMwMzc3MjE@._V1_.jpg",
                 "2020-09-04",
@@ -246,7 +246,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Dune",
                 "https://m.media-amazon.com/images/M/MV5BMGFkZGY0NTgtMGEyZC00YzhjLTkyOWItYzMzOTljMDA3ZjU2XkEyXkFqcGdeQXVyNzc4NTU3Njg@._V1_.jpg",
                 "2020-12-18",
@@ -256,7 +256,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Tenet",
                 "https://m.media-amazon.com/images/M/MV5BYzg0NGM2NjAtNmIxOC00MDJmLTg5ZmYtYzM0MTE4NWE2NzlhXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg",
                 "2020-09-03",
@@ -266,7 +266,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "I'm Thinking of Ending Things",
                 "https://m.media-amazon.com/images/M/MV5BNWMyZTA1MTItMzFhOS00NGY5LWJlZDMtMzczZmRjOThkMmViXkEyXkFqcGdeQXVyMjUxMTY3ODM@._V1_.jpg",
                 "2020-09-04",
@@ -276,7 +276,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Cuties",
                 "https://m.media-amazon.com/images/M/MV5BYzZiMTMzMDUtMzVmOS00ODZjLThiNDQtNmY2NzIxZjBmZGM4XkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
                 "2020-09-09",
@@ -286,7 +286,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "No Time to Die",
                 "https://m.media-amazon.com/images/M/MV5BMjI4NTI0ODMtYjQzZC00YzljLWE3YzUtM2MzMmNmZjA1Y2JiXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2020-11-20",
@@ -296,7 +296,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Karate Kid",
                 "https://m.media-amazon.com/images/M/MV5BNTkzY2YzNmYtY2ViMS00MThiLWFlYTEtOWQ1OTBiOGEwMTdhXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
                 "1984-06-22",
@@ -306,7 +306,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Babysitter: Killer Queen",
                 "https://m.media-amazon.com/images/M/MV5BMWEwMDU3MWUtZTdiMy00Yjg5LWFiNWYtYTRmZGExNzk5YjQ2XkEyXkFqcGdeQXVyNTUwOTkzMzY@._V1_.jpg",
                 "2020-09-10",
@@ -316,7 +316,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "After We Collided",
                 "https://m.media-amazon.com/images/M/MV5BN2UyNGM3MDUtMTIzZi00ZDdkLThlYTktYjk0ZDMzM2JiMjMyXkEyXkFqcGdeQXVyNzE0MjkxMzA@._V1_.jpg",
                 "2020-10-23",
@@ -326,7 +326,7 @@ object DataDummy {
             )
         )
         popularMovie.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Bill & Ted Face the Music",
                 "https://m.media-amazon.com/images/M/MV5BOTRiNzFhNjAtNTdhMS00ZjViLWFhNTUtMWJlMTJkMGM1YzM4XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2020-08-28",
@@ -339,11 +339,11 @@ object DataDummy {
         return popularMovie
     }
 
-    fun generatePopularTvShows(): List<MovieEntity> {
-        val popularTvShow = ArrayList<MovieEntity>()
+    fun generatePopularTvShows(): List<TrendingMoviesEntity> {
+        val popularTvShow = ArrayList<TrendingMoviesEntity>()
 
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Boys",
                 "https://m.media-amazon.com/images/M/MV5BNGEyOGJiNWEtMTgwMi00ODU4LTlkMjItZWI4NjFmMzgxZGY2XkEyXkFqcGdeQXVyNjcyNjcyMzQ@._V1_.jpg",
                 "2019-07-26",
@@ -354,7 +354,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Cobra Kai",
                 "https://m.media-amazon.com/images/M/MV5BYTI3NjcxNjctNzZhZS00NjQwLTg4NDEtMmQzOGJiYTUwNWFjXkEyXkFqcGdeQXVyOTA5NzQ0MDQ@._V1_.jpg",
                 "2018-05-02",
@@ -365,7 +365,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Raised by Wolves",
                 "https://m.media-amazon.com/images/M/MV5BZWM2NmIwZjQtZTEwYS00MmVhLTgzODItMGU3OWRkN2UxM2YyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2020-09-03",
@@ -376,7 +376,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Ratched",
                 "https://m.media-amazon.com/images/M/MV5BMDJiZGE5NzYtZGU3Zi00NDQwLWFhMjAtNTM0MDM2ZTljMjAzXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
                 "2020-09-18",
@@ -387,7 +387,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Mandalorian",
                 "https://m.media-amazon.com/images/M/MV5BZDhlMzY0ZGItZTcyNS00ZTAxLWIyMmYtZGQ2ODg5OWZiYmJkXkEyXkFqcGdeQXVyODkzNTgxMDg@._V1_.jpg",
                 "2019-11-12",
@@ -398,7 +398,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Away",
                 "https://m.media-amazon.com/images/M/MV5BZDg0NDAxOTctZjdmNy00ODVjLTgyMDItZjFmMjdjYTk3ZTYxXkEyXkFqcGdeQXVyNjEwNTM2Mzc@._V1_.jpg",
                 "2020-09-04",
@@ -409,7 +409,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Lucifer",
                 "https://m.media-amazon.com/images/M/MV5BNzY1YjIxOGMtOTAyZC00YTcyLWFhMzQtZTJkYTljYzU0MGRlXkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
                 "N/A",
@@ -420,7 +420,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Des",
                 "https://m.media-amazon.com/images/M/MV5BNjVkZGVlNzItM2FhOC00MWFhLThkYjUtNWE0MDNkNGMxMzk3XkEyXkFqcGdeQXVyNjEwNTM2Mzc@._V1_.jpg",
                 "2020-09-14",
@@ -431,7 +431,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "Lovecraft Country",
                 "https://m.media-amazon.com/images/M/MV5BM2ExMmZlZDQtOTJiZC00Y2UzLWIxNDYtZTdiYzAzYzQyMmQ4XkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
                 "2020-08-16",
@@ -442,7 +442,7 @@ object DataDummy {
             )
         )
         popularTvShow.add(
-            MovieEntity(
+            TrendingMoviesEntity(
                 "The Umbrella Academy",
                 "https://m.media-amazon.com/images/M/MV5BNzA5MjkwYzMtNGY2MS00YWRjLThkNTktOTNmMzdlZjE3Y2IxXkEyXkFqcGdeQXVyMjkwMzMxODg@._V1_.jpg",
                 "2019-02-15",
@@ -455,6 +455,8 @@ object DataDummy {
 
         return popularTvShow
     }
+
+     */
 
     fun generateRemoteTrendingMovies(): List<TrendingMovieResults> {
         val movie = ArrayList<TrendingMovieResults>()

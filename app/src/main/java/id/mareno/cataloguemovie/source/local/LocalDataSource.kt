@@ -1,7 +1,7 @@
 package id.mareno.cataloguemovie.source.local
 
 import androidx.lifecycle.LiveData
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 
 class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
 
@@ -12,19 +12,19 @@ class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
             INSTANCE ?: LocalDataSource(movieDao)
     }
 
-    fun getAllTrendingMovies(): LiveData<List<TrendingMovieResults>> =
+    fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
         mMovieDao.getAllTrendingMovies()
 
-    fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMovieResults>> =
+    fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
         mMovieDao.getBookmarkedTrendingMovies()
 
-    fun setMovieBookmark(movie: TrendingMovieResults?, newState: Boolean) {
+    fun setTrendingMovieBookmark(movie: TrendingMoviesEntity?, newState: Boolean) {
         if (movie != null) {
             movie.bookmarked = newState
             mMovieDao.updateTrendingMovie(movie)
         }
     }
 
-    fun insertTrendingMovies(movies: List<TrendingMovieResults>) =
+    fun insertTrendingMovies(movies: List<TrendingMoviesEntity>) =
         mMovieDao.insertTrendingMovie(movies)
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import id.mareno.cataloguemovie.helper.di.RetrofitBuilder
 import id.mareno.cataloguemovie.helper.di.RetrofitInterfaces
-import id.mareno.cataloguemovie.model.entities.ComingSoonModel
+import id.mareno.cataloguemovie.model.json.ComingSoonModel
 import id.mareno.cataloguemovie.model.responses.ComingSoonMovieResults
 import retrofit2.Call
 import retrofit2.Callback
