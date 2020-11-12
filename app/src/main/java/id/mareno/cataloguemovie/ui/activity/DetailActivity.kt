@@ -50,6 +50,7 @@ class DetailActivity : AppCompatActivity() {
 
         val oldDateFormat = "yyyy-MM-dd"
         val newDateFormat = "dd MMMM yyyy"
+        //
 
         val bundle = intent.getBundleExtra(MOVE_ACTIVITY)
         trendingMovie = bundle?.getParcelable(TRENDING_MOVIE)
