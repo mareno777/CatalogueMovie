@@ -18,7 +18,8 @@ class SearchViewModel : ViewModel() {
     val movieResults = MutableLiveData<List<SearchMovieResults>>()
 
     fun getResultMovie(searchValue: String) {
-        searchMovieApi = RetrofitBuilder.getApiClient().create(RetrofitInterfaces.SearchMovieApi::class.java)
+        searchMovieApi =
+            RetrofitBuilder.getApiClient().create(RetrofitInterfaces.SearchMovieApi::class.java)
 
         val searchCal = searchMovieApi.getSearchMovie(BuildConfig.API_KEY, searchValue)
         searchCal.enqueue(object : Callback<SearchMovieModel> {

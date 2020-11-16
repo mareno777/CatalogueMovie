@@ -1,5 +1,6 @@
 package id.mareno.cataloguemovie.source.local
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 
@@ -22,6 +23,7 @@ class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
         if (movie != null) {
             movie.bookmarked = newState
             mMovieDao.updateTrendingMovie(movie)
+            Log.d("BOOKMARKED_MOVIE", movie.title + newState.toString())
         }
     }
 

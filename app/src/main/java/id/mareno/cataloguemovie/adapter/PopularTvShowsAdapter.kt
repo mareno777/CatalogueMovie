@@ -2,7 +2,6 @@ package id.mareno.cataloguemovie.adapter
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.MOVE_ACTIVITY
-import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.POPULAR_TV
+import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class PopularTvShowsAdapter :
@@ -65,11 +64,10 @@ class PopularTvShowsAdapter :
                     })
 
                 setOnClickListener {
-                    val bundle = Bundle().apply {
-                        putParcelable(POPULAR_TV, tvShow)
-                    }
+
                     val intent = Intent(context, DetailActivity::class.java).apply {
-                        putExtra(MOVE_ACTIVITY, bundle)
+                        putExtra(EXTRA_ID, tvShow.id)
+                        putExtra(EXTRA_TYPE, "tv")
                     }
                     context.startActivity(intent)
                 }

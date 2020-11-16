@@ -18,7 +18,8 @@ class ComingSoonViewModel : ViewModel() {
     val movieResults = MutableLiveData<List<ComingSoonMovieResults>>()
 
     fun getMovie() {
-        comingSoonApi = RetrofitBuilder.getApiClient().create(RetrofitInterfaces.ComingSoonApi::class.java)
+        comingSoonApi =
+            RetrofitBuilder.getApiClient().create(RetrofitInterfaces.ComingSoonApi::class.java)
         val trendingCall = comingSoonApi.getComingSoonMovies()
         try {
 

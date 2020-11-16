@@ -2,7 +2,6 @@ package id.mareno.cataloguemovie.adapter
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.MOVE_ACTIVITY
-import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.POPULAR_MOVIE
+import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class PopularMoviesAdapter : RecyclerView.Adapter<PopularMoviesAdapter.PopularMoviesViewHolder>() {
@@ -66,11 +65,9 @@ class PopularMoviesAdapter : RecyclerView.Adapter<PopularMoviesAdapter.PopularMo
                     })
 
                 setOnClickListener {
-                    val bundle = Bundle().apply {
-                        putParcelable(POPULAR_MOVIE, movie)
-                    }
                     val intent = Intent(context, DetailActivity::class.java).apply {
-                        putExtra(MOVE_ACTIVITY, bundle)
+                        putExtra(EXTRA_ID, movie.id)
+                        putExtra(EXTRA_TYPE, "movie")
                     }
                     context.startActivity(intent)
                 }

@@ -16,12 +16,25 @@ class ViewModelFactory private constructor(private val movieRepository: MovieRep
 
         fun getInstance(viewLifecycleOwner: LifecycleOwner, context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Repository.provideRepository(viewLifecycleOwner, context))
+                instance ?: ViewModelFactory(
+                    Repository.provideRepository(
+                        viewLifecycleOwner,
+                        context
+                    )
+                )
             }
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return HomeViewModel(movieRepository) as T
+        return when {
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(movieRepository) as T
+            }
+            modelClass.isAssignableFrom(DetailMovieViewModel::class.java) -> {
+                DetailMovieViewModel(movieRepository) as T
+            }
+            else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
+        }
     }
 }

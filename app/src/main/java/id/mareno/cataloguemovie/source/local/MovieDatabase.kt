@@ -25,9 +25,11 @@ abstract class MovieDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): MovieDatabase =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Room.databaseBuilder(context.applicationContext,
+                INSTANCE ?: Room.databaseBuilder(
+                    context.applicationContext,
                     MovieDatabase::class.java,
-                    "Movies.db").build()
+                    "Movies.db"
+                ).build()
             }
     }
 }

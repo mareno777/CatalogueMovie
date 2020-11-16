@@ -49,9 +49,10 @@ class TrendingMovieAdapter : RecyclerView.Adapter<TrendingMovieAdapter.TrendingV
             with(itemView) {
                 Glide.with(context)
                     .load("https://image.tmdb.org/t/p/original${movie.posterPath}")
-                    .apply(RequestOptions()
-                        .skipMemoryCache(true)
-                        .dontAnimate()
+                    .apply(
+                        RequestOptions()
+                            .skipMemoryCache(true)
+                            .dontAnimate()
                     )
                     .into(object : CustomTarget<Drawable>() {
                         override fun onResourceReady(

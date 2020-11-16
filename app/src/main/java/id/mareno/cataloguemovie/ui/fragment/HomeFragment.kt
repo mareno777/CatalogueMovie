@@ -104,7 +104,11 @@ class HomeFragment : Fragment() {
                         trendingMovieAdapter.notifyDataSetChanged()
                     }
                     Status.ERROR -> {
-                        Snackbar.make(rv_trending_movies_now, "Something went wrong", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            rv_trending_movies_now,
+                            "Something went wrong",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

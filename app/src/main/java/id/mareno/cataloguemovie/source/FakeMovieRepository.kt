@@ -2,6 +2,8 @@ package id.mareno.cataloguemovie.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.DetailTvEntity
 import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
@@ -53,13 +55,9 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
                 if (movieResponses != null) {
                     for (response in movieResponses) {
                         val movie = PopularMovieResults(
-                            response.genreIds,
                             response.id,
-                            response.overview,
                             response.posterPath,
-                            response.releaseDate,
                             response.title,
-                            response.voteAverage
                         )
                         movieList.add(movie)
                     }
@@ -81,13 +79,9 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
                 if (movieResponses != null) {
                     for (response in movieResponses) {
                         val movie = PopularTvResults(
-                            response.firstAirDate,
-                            response.genreIds,
                             response.id,
                             response.title,
-                            response.overview,
-                            response.posterPath,
-                            response.voteAverage
+                            response.posterPath
                         )
                         movieList.add(movie)
                     }
@@ -97,6 +91,14 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
 
         })
         return movieResults
+    }
+
+    override fun getDetailMovie(id: Int): LiveData<DetailMovieEntity> {
+        return MutableLiveData()
+    }
+
+    override fun getDetailTv(id: Int): LiveData<DetailTvEntity> {
+        return MutableLiveData()
     }
 
     override fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =

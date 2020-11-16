@@ -2,11 +2,10 @@ package id.mareno.cataloguemovie.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.DetailTvEntity
 import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
-import id.mareno.cataloguemovie.model.responses.PopularMovieResults
-import id.mareno.cataloguemovie.model.responses.PopularTvResults
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
-import id.mareno.cataloguemovie.model.responses.TrendingTvResults
+import id.mareno.cataloguemovie.model.responses.*
 import id.mareno.cataloguemovie.source.local.LocalDataSource
 import id.mareno.cataloguemovie.source.remote.ApiResponse
 import id.mareno.cataloguemovie.source.remote.MovieDataSource
@@ -35,7 +34,10 @@ class MovieRepository private constructor(
     }
 
     override fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>> {
-        return object : NetworkBoundResource<List<TrendingMoviesEntity>, List<TrendingMovieResults>>(appExecutors) {
+        return object :
+            NetworkBoundResource<List<TrendingMoviesEntity>, List<TrendingMovieResults>>(
+                appExecutors
+            ) {
             override fun loadFromDB(): LiveData<List<TrendingMoviesEntity>> =
                 localDataSource.getAllTrendingMovies()
 
@@ -104,13 +106,9 @@ class MovieRepository private constructor(
                 if (movieResponses != null) {
                     for (response in movieResponses) {
                         val movie = PopularMovieResults(
-                            response.genreIds,
                             response.id,
-                            response.overview,
                             response.posterPath,
-                            response.releaseDate,
                             response.title,
-                            response.voteAverage
                         )
                         movieList.add(movie)
                     }
@@ -132,13 +130,9 @@ class MovieRepository private constructor(
                 if (movieResponses != null) {
                     for (response in movieResponses) {
                         val movie = PopularTvResults(
-                            response.firstAirDate,
-                            response.genreIds,
                             response.id,
                             response.title,
-                            response.overview,
                             response.posterPath,
-                            response.voteAverage
                         )
                         movieList.add(movie)
                     }
@@ -148,6 +142,54 @@ class MovieRepository private constructor(
 
         })
         return movieResults
+    }
+
+    override fun getDetailMovie(id: Int): LiveData<DetailMovieEntity> {
+        val dataDetailMovie = MutableLiveData<DetailMovieEntity>()
+
+        remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovie {
+            override fun onDetailMovieReceived(detailMovieResponses: DetailMovieResults) {
+                val detail = DetailMovieEntity(
+                    detailMovieResponses.backdropPath,
+                    detailMovieResponses.genres,
+                    detailMovieResponses.id,
+                    detailMovieResponses.originalLanguage,
+                    detailMovieResponses.overview,
+                    detailMovieResponses.posterPath,
+                    detailMovieResponses.releaseDate,
+                    detailMovieResponses.title,
+                    detailMovieResponses.voteAverage,
+                    detailMovieResponses.voteCount,
+                    false
+                )
+                dataDetailMovie.postValue(detail)
+            }
+        })
+        return dataDetailMovie
+    }
+
+    override fun getDetailTv(id: Int): LiveData<DetailTvEntity> {
+        val dataDetailTv = MutableLiveData<DetailTvEntity>()
+
+        remoteDataSource.getDetailTv(id, object : RemoteDataSource.LoadDetailTv {
+            override fun onDetailTvReceived(detailTvResponses: DetailTvResults) {
+                val detail = DetailTvEntity(
+                    detailTvResponses.releaseDate,
+                    detailTvResponses.genres,
+                    detailTvResponses.id,
+                    detailTvResponses.title,
+                    detailTvResponses.numberOfEpisodes,
+                    detailTvResponses.numberOfSeasons,
+                    detailTvResponses.overview,
+                    detailTvResponses.posterPath,
+                    detailTvResponses.voteAverage,
+                    false
+                )
+                dataDetailTv.postValue(detail)
+            }
+
+        })
+        return dataDetailTv
     }
 
     override fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =

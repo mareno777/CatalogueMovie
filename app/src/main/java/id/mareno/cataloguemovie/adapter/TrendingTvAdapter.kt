@@ -2,7 +2,6 @@ package id.mareno.cataloguemovie.adapter
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.MOVE_ACTIVITY
-import id.mareno.cataloguemovie.ui.fragment.HomeFragment.Companion.TRENDING_TV
+import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 
@@ -45,11 +44,11 @@ class TrendingTvAdapter : RecyclerView.Adapter<TrendingTvAdapter.TrendingTvViewH
 
 
     inner class TrendingTvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movie: TrendingTvResults) {
+        fun bind(tvShow: TrendingTvResults) {
             with(itemView) {
-                tv_placeholder.text = movie.title
+                tv_placeholder.text = tvShow.title
                 Glide.with(context)
-                    .load("https://image.tmdb.org/t/p/original${movie.posterPath}")
+                    .load("https://image.tmdb.org/t/p/original${tvShow.posterPath}")
                     .into(object : CustomTarget<Drawable>() {
                         override fun onResourceReady(
                             resource: Drawable,
@@ -63,11 +62,10 @@ class TrendingTvAdapter : RecyclerView.Adapter<TrendingTvAdapter.TrendingTvViewH
                     })
 
                 setOnClickListener {
-                    val bundle = Bundle().apply {
-                        putParcelable(TRENDING_TV, movie)
-                    }
+
                     val intent = Intent(context, DetailActivity::class.java).apply {
-                        putExtra(MOVE_ACTIVITY, bundle)
+                        putExtra(EXTRA_ID, tvShow.id)
+                        putExtra(EXTRA_TYPE, "tv")
                     }
                     context.startActivity(intent)
                 }

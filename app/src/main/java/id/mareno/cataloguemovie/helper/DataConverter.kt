@@ -8,7 +8,7 @@ class DataConverter {
 
     @TypeConverter
     fun fromInt(value: String): List<String> {
-        val type = object : TypeToken<List<String>>(){}.type
+        val type = object : TypeToken<List<String>>() {}.type
         return Gson().fromJson(value, type)
     }
 

@@ -2,8 +2,11 @@ package id.mareno.cataloguemovie.helper.di
 
 import id.mareno.cataloguemovie.BuildConfig
 import id.mareno.cataloguemovie.model.json.*
+import id.mareno.cataloguemovie.model.responses.DetailMovieResults
+import id.mareno.cataloguemovie.model.responses.DetailTvResults
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 object RetrofitInterfaces {
@@ -61,5 +64,19 @@ object RetrofitInterfaces {
             }"
         )
         fun getTrendingTvShows(): Call<TrendingTvModel>
+    }
+
+    interface DetailMovie {
+        @GET("movie/{id}?api_key=${BuildConfig.API_KEY}")
+        fun getDetailMovie(
+            @Path("id") id: Int
+        ): Call<DetailMovieResults>
+    }
+
+    interface DetailTv {
+        @GET("tv/{id}?api_key=${BuildConfig.API_KEY}")
+        fun getDetailTv(
+            @Path("id") id: Int
+        ): Call<DetailTvResults>
     }
 }

@@ -7,16 +7,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PopularTvResults(
-    @SerializedName("first_air_date")
-    var firstAirDate: String?,
-    @SerializedName("genre_ids")
-    var genreIds: List<Int>?,
     var id: Int?,
     @SerializedName("name")
     var title: String?,
-    var overview: String?,
     @SerializedName("poster_path")
     var posterPath: String?,
-    @SerializedName("vote_average")
-    var voteAverage: Double?
 ) : Parcelable

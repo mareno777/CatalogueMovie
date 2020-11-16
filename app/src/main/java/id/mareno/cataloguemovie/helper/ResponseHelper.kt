@@ -9,10 +9,7 @@ import id.mareno.cataloguemovie.model.json.PopularMovieModel
 import id.mareno.cataloguemovie.model.json.PopularTvModel
 import id.mareno.cataloguemovie.model.json.TrendingMovieModel
 import id.mareno.cataloguemovie.model.json.TrendingTvModel
-import id.mareno.cataloguemovie.model.responses.PopularMovieResults
-import id.mareno.cataloguemovie.model.responses.PopularTvResults
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
-import id.mareno.cataloguemovie.model.responses.TrendingTvResults
+import id.mareno.cataloguemovie.model.responses.*
 import id.mareno.cataloguemovie.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,6 +21,8 @@ class ResponseHelper {
     private lateinit var trendingtvApi: RetrofitInterfaces.TrendingTvApi
     private lateinit var popularMoviesApi: RetrofitInterfaces.PopularMoviesApi
     private lateinit var popularTvApi: RetrofitInterfaces.PopularTvApi
+    private lateinit var detailMovieApi: RetrofitInterfaces.DetailMovie
+    private lateinit var detailTvApi: RetrofitInterfaces.DetailTv
 
     fun loadTrendingMovies(): LiveData<List<TrendingMovieResults>> {
         EspressoIdlingResource.increment()
@@ -89,7 +88,8 @@ class ResponseHelper {
     fun loadPopularMovies(): LiveData<List<PopularMovieResults>>? {
         EspressoIdlingResource.increment()
         val movieList = MutableLiveData<List<PopularMovieResults>>()
-        popularMoviesApi = RetrofitBuilder.getApiClient().create(RetrofitInterfaces.PopularMoviesApi::class.java)
+        popularMoviesApi =
+            RetrofitBuilder.getApiClient().create(RetrofitInterfaces.PopularMoviesApi::class.java)
         val popularMoviesCall = popularMoviesApi.getPopularMovies()
         try {
             popularMoviesCall.enqueue(object : Callback<PopularMovieModel> {
@@ -142,5 +142,61 @@ class ResponseHelper {
         }
 
         return movieList
+    }
+
+    fun loadDetailMovie(id: Int): LiveData<DetailMovieResults> {
+        val movieDetail = MutableLiveData<DetailMovieResults>()
+        detailMovieApi =
+            RetrofitBuilder.getApiClient().create(RetrofitInterfaces.DetailMovie::class.java)
+        val movieDetailCall = detailMovieApi.getDetailMovie(id)
+        try {
+            movieDetailCall.enqueue(object : Callback<DetailMovieResults> {
+                override fun onResponse(
+                    call: Call<DetailMovieResults>,
+                    response: Response<DetailMovieResults>
+                ) {
+                    val jsonResponse = response.body()
+                    if (jsonResponse != null) {
+                        movieDetail.postValue(jsonResponse)
+                    }
+                }
+
+                override fun onFailure(call: Call<DetailMovieResults>, t: Throwable) {
+
+                }
+
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return movieDetail
+    }
+
+    fun loadDetailTv(id: Int): LiveData<DetailTvResults> {
+        val tvDetail = MutableLiveData<DetailTvResults>()
+        detailTvApi =
+            RetrofitBuilder.getApiClient().create(RetrofitInterfaces.DetailTv::class.java)
+        val tvDetailCall = detailTvApi.getDetailTv(id)
+        try {
+            tvDetailCall.enqueue(object : Callback<DetailTvResults> {
+                override fun onResponse(
+                    call: Call<DetailTvResults>,
+                    response: Response<DetailTvResults>
+                ) {
+                    val jsonResponse = response.body()
+                    if (jsonResponse != null) {
+                        tvDetail.postValue(jsonResponse)
+                    }
+                }
+
+                override fun onFailure(call: Call<DetailTvResults>, t: Throwable) {
+
+                }
+
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return tvDetail
     }
 }

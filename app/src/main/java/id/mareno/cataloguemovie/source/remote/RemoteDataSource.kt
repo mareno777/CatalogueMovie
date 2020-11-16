@@ -4,10 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import id.mareno.cataloguemovie.helper.ResponseHelper
-import id.mareno.cataloguemovie.model.responses.PopularMovieResults
-import id.mareno.cataloguemovie.model.responses.PopularTvResults
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
-import id.mareno.cataloguemovie.model.responses.TrendingTvResults
+import id.mareno.cataloguemovie.model.responses.*
 
 class RemoteDataSource private constructor(
     private val responseHelper: ResponseHelper,
@@ -56,6 +53,18 @@ class RemoteDataSource private constructor(
         })
     }
 
+    fun getDetailMovie(id: Int, callback: LoadDetailMovie) {
+        responseHelper.loadDetailMovie(id).observe(lifecycleOwner, { detail ->
+            callback.onDetailMovieReceived(detail)
+        })
+    }
+
+    fun getDetailTv(id: Int, callback: LoadDetailTv) {
+        responseHelper.loadDetailTv(id).observe(lifecycleOwner, { detail ->
+            callback.onDetailTvReceived(detail)
+        })
+    }
+
     interface LoadTrendingMoviesCallback {
         fun onAllMoviesReceived(movieResponses: List<TrendingMovieResults>)
     }
@@ -70,5 +79,13 @@ class RemoteDataSource private constructor(
 
     interface LoadPopularTvsCallback {
         fun onAllMoviesReceived(movieResponses: List<PopularTvResults>?)
+    }
+
+    interface LoadDetailMovie {
+        fun onDetailMovieReceived(detailMovieResponses: DetailMovieResults)
+    }
+
+    interface LoadDetailTv {
+        fun onDetailTvReceived(detailTvResponses: DetailTvResults)
     }
 }

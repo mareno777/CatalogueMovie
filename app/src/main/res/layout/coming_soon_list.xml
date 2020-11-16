@@ -10,12 +10,12 @@
         android:id="@+id/backdrop_image"
         android:layout_width="0dp"
         android:layout_height="200dp"
+        android:contentDescription="@string/coming_soon"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/dummy_pict"
-        android:contentDescription="@string/coming_soon" />
+        tools:src="@drawable/dummy_pict" />
 
     <LinearLayout
         android:id="@+id/ll_button"
