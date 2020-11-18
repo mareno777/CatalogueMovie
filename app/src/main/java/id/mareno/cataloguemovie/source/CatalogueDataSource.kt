@@ -1,4 +1,4 @@
-package id.mareno.cataloguemovie.source.remote
+package id.mareno.cataloguemovie.source
 
 import androidx.lifecycle.LiveData
 import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
@@ -7,11 +7,10 @@ import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
-import id.mareno.cataloguemovie.vo.Resource
 
-interface MovieDataSource {
+interface CatalogueDataSource {
 
-    fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>>
+    fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>>
 
     fun getAllTrendingTvs(): LiveData<List<TrendingTvResults>>
 
@@ -23,7 +22,19 @@ interface MovieDataSource {
 
     fun getDetailTv(id: Int): LiveData<DetailTvEntity>
 
-    fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>>
+    fun getBookmarkedMovies(): LiveData<List<DetailMovieEntity>>
 
-    fun setTrendingMovieBookmark(movie: TrendingMoviesEntity, state: Boolean)
+    fun setBookmarkMovie(movie: DetailMovieEntity)
+
+    fun deleteBookmarkMovie(movie: DetailMovieEntity)
+
+    fun getMovieOnRoom(movieId: Int): LiveData<DetailMovieEntity>
+
+    fun getBookmarkedTvs(): LiveData<List<DetailTvEntity>>
+
+    fun setBookmarkTv(tv: DetailTvEntity)
+
+    fun deleteBookmarkTv(tv: DetailTvEntity)
+
+    fun getTvOnRoom(tvId: Int): LiveData<DetailTvEntity>
 }

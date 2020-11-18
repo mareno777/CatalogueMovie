@@ -8,11 +8,12 @@ import id.mareno.cataloguemovie.helper.di.RetrofitBuilder
 import id.mareno.cataloguemovie.helper.di.RetrofitInterfaces
 import id.mareno.cataloguemovie.model.json.ComingSoonModel
 import id.mareno.cataloguemovie.model.responses.ComingSoonMovieResults
+import id.mareno.cataloguemovie.source.CatalogueRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ComingSoonViewModel : ViewModel() {
+class ComingSoonViewModel(private val catalogueRepository: CatalogueRepository) : ViewModel() {
     private lateinit var comingSoonApi: RetrofitInterfaces.ComingSoonApi
 
     val movieResults = MutableLiveData<List<ComingSoonMovieResults>>()

@@ -10,40 +10,37 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
-class TrendingMovieAdapter : RecyclerView.Adapter<TrendingMovieAdapter.TrendingViewHolder>() {
-    private val listMovies = ArrayList<TrendingMoviesEntity>()
+class BookmarkMovieAdapter : RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkViewHolder>() {
+    private val movieList = ArrayList<DetailMovieEntity>()
 
-    fun setData(movies: List<TrendingMoviesEntity>) {
-        listMovies.clear()
-        listMovies.addAll(movies)
+    fun setData(movies: List<DetailMovieEntity>) {
+        movieList.clear()
+        movieList.addAll(movies)
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): TrendingMovieAdapter.TrendingViewHolder {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.movie_list_card, parent, false)
-        return TrendingViewHolder(view)
+        return BookmarkViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TrendingMovieAdapter.TrendingViewHolder, position: Int) {
-        val movie = listMovies[position]
-        holder.bind(movie)
+    override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
+        holder.bind(movieList[position])
     }
 
-    override fun getItemCount() = listMovies.size
+    override fun getItemCount(): Int = movieList.size
 
-    inner class TrendingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movie: TrendingMoviesEntity) {
+    inner class BookmarkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(movie: DetailMovieEntity) {
             with(itemView) {
+                tv_placeholder.text = movie.title
+
                 Glide.with(context)
                     .load("https://image.tmdb.org/t/p/original${movie.posterPath}")
                     .into(object : CustomTarget<Drawable>() {
@@ -56,18 +53,15 @@ class TrendingMovieAdapter : RecyclerView.Adapter<TrendingMovieAdapter.TrendingV
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) = Unit
+
                     })
-
-                tv_placeholder.text = movie.title
-
                 setOnClickListener {
                     val intent = Intent(context, DetailActivity::class.java).apply {
-                        putExtra(EXTRA_ID, movie.id)
-                        putExtra(EXTRA_TYPE, "movie")
+                        putExtra(DetailActivity.EXTRA_ID, movie.id)
+                        putExtra(DetailActivity.EXTRA_TYPE, "movie")
                     }
                     context.startActivity(intent)
                 }
-
             }
         }
     }

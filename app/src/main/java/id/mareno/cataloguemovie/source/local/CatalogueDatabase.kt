@@ -4,31 +4,30 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import id.mareno.cataloguemovie.helper.DataConverter
-import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.DetailTvEntity
 
 @Database(
-    entities = [TrendingMoviesEntity::class],
+    entities = [DetailMovieEntity::class, DetailTvEntity::class],
     version = 1,
     exportSchema = false
 )
+abstract class CatalogueDatabase : RoomDatabase() {
 
-@TypeConverters(DataConverter::class)
-abstract class MovieDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
+    abstract fun tvDao(): TvDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: MovieDatabase? = null
+        private var INSTANCE: CatalogueDatabase? = null
 
-        fun getInstance(context: Context): MovieDatabase =
+        fun getInstance(context: Context): CatalogueDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    MovieDatabase::class.java,
-                    "Movies.db"
+                    CatalogueDatabase::class.java,
+                    "Catalogue.db"
                 ).build()
             }
     }

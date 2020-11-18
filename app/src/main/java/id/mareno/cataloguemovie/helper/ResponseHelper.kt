@@ -45,11 +45,12 @@ class ResponseHelper {
                 }
 
                 override fun onFailure(call: Call<TrendingMovieModel>, t: Throwable) {
-                    Log.d("RETROFIT", t.message.toString())
+                    movieList.postValue(emptyList())
                 }
             })
         } catch (e: Exception) {
             e.printStackTrace()
+            movieList.postValue(emptyList())
         }
         return movieList
 

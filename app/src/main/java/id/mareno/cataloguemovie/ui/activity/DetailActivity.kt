@@ -7,13 +7,15 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.android.material.snackbar.Snackbar
 import id.mareno.cataloguemovie.R
+import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.DetailTvEntity
 import id.mareno.cataloguemovie.viewmodel.DetailMovieViewModel
 import id.mareno.cataloguemovie.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -26,6 +28,8 @@ class DetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_ID = "extra_id"
         const val EXTRA_TYPE = "extra_type"
+        const val MOVIE_TYPE = "movie_type"
+        const val TV_TYPE = "tv_type"
     }
 
     private lateinit var detailMovieViewModel: DetailMovieViewModel
@@ -34,11 +38,14 @@ class DetailActivity : AppCompatActivity() {
     private var title: String? = null
     private var image: String? = null
     private var oldDate: String? = null
-    private var rating: String? = null
+    private var rating: Double? = null
     private var plot: String? = null
     private var genres: String? = null
+    private var movieId = 0
     private var seasons = ""
+    private var dataType = ""
     private var episodes = ""
+    private var bookmarked = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,23 +53,34 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         val factory = ViewModelFactory.getInstance(this, this)
-
         detailMovieViewModel = ViewModelProvider(this, factory)[DetailMovieViewModel::class.java]
 
         val extras = intent.extras
+
         if (extras != null) {
+
             val type = extras.getString(EXTRA_TYPE)
-            val movieId = extras.getInt(EXTRA_ID, 0)
+            movieId = extras.getInt(EXTRA_ID, 0)
             if (type == "movie" && movieId != 0) {
 
-                tv_seasons_episodes.visibility = View.GONE
+                dataType = MOVIE_TYPE
                 detailMovieViewModel.setSelectedMovieId(movieId)
 
+                detailMovieViewModel.getMovieByRoom().observe(this, { data ->
+                    if (data == null) {
+                        stateUnbookmarked()
+                    } else {
+                        stateBookmarked()
+                    }
+                })
+                tv_seasons_episodes.visibility = View.GONE
+
+                // mengambil detail movie
                 detailMovieViewModel.getDetailMovie().observe(this, { movie ->
                     title = movie.title
-                    image = "https://image.tmdb.org/t/p/original${movie.posterPath}"
+                    image = movie.posterPath
                     oldDate = movie.releaseDate
-                    rating = movie.voteAverage.toString()
+                    rating = movie.voteAverage
                     plot = movie.overview
                     genres = movie.genres.toString()
                     link = "movie/${movie.id.toString()}"
@@ -72,18 +90,28 @@ class DetailActivity : AppCompatActivity() {
             }
 
             if (type == "tv" && movieId != 0) {
+
+                dataType = TV_TYPE
                 detailMovieViewModel.setSelectedMovieId(movieId)
+
+                detailMovieViewModel.getTvByRoom().observe(this, { data ->
+                    if (data == null) {
+                        stateUnbookmarked()
+                    } else {
+                        stateBookmarked()
+                    }
+                })
 
                 detailMovieViewModel.getDetailTv().observe(this, { movie ->
                     title = movie.title
-                    image = "https://image.tmdb.org/t/p/original${movie.posterPath}"
+                    image = movie.posterPath
                     oldDate = movie.releaseDate
-                    rating = movie.voteAverage.toString()
+                    rating = movie.voteAverage
                     plot = movie.overview
                     genres = movie.genres.toString()
                     seasons = movie.numberOfSeasons.toString()
                     episodes = movie.numberOfEpisodes.toString()
-                    link = "tv/${movie.id.toString()}"
+                    link = "tv/${movie.id}"
 
                     populateDetail()
                 })
@@ -104,12 +132,14 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        btn_favorite.setOnClickListener { view ->
-            Snackbar.make(
-                view,
-                getString(R.string.coming_soon),
-                Snackbar.LENGTH_SHORT
-            ).show()
+        btn_favorite.setOnClickListener {
+            if (dataType == MOVIE_TYPE) {
+                bookmarkMovie()
+            }
+
+            if (dataType == TV_TYPE) {
+                bookmarkTv()
+            }
         }
 
         window.apply {
@@ -117,6 +147,54 @@ class DetailActivity : AppCompatActivity() {
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             statusBarColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun stateBookmarked() {
+        btn_favorite.setIconResource(R.drawable.ic_favorite)
+        btn_favorite.iconTint = ContextCompat.getColorStateList(this, R.color.colorRed)
+        bookmarked = true
+    }
+
+    private fun stateUnbookmarked() {
+        btn_favorite.setIconResource(R.drawable.ic_favorite_border)
+        btn_favorite.iconTint = ContextCompat.getColorStateList(this, R.color.white)
+        bookmarked = false
+    }
+
+    private fun bookmarkMovie() {
+        val movie = DetailMovieEntity(
+            genres,
+            movieId,
+            plot,
+            image,
+            oldDate,
+            title,
+            rating
+        )
+        if (!bookmarked) {
+            detailMovieViewModel.setBookmark(dataType, true, movie)
+        } else {
+            detailMovieViewModel.setBookmark(dataType, false, movie)
+        }
+    }
+
+    private fun bookmarkTv() {
+        val tv = DetailTvEntity(
+            oldDate,
+            genres,
+            movieId,
+            title,
+            episodes,
+            seasons,
+            plot,
+            image,
+            rating
+        )
+        if (!bookmarked) {
+            detailMovieViewModel.setBookmark(dataType, true, tv)
+        } else {
+            detailMovieViewModel.setBookmark(dataType, false, tv)
         }
     }
 
@@ -141,7 +219,7 @@ class DetailActivity : AppCompatActivity() {
         tv_plot.text = plot
 
         Glide.with(this)
-            .load(image)
+            .load("https://image.tmdb.org/t/p/original${image}")
             .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 15)))
             .into(object : CustomTarget<Drawable>() {
                 override fun onResourceReady(
@@ -155,18 +233,9 @@ class DetailActivity : AppCompatActivity() {
             })
 
         Glide.with(this)
-            .load(image)
+            .load("https://image.tmdb.org/t/p/original${image}")
             .error(R.drawable.not_found)
             .into(image_inside)
-    }
-
-    private fun setBookmarkState(state: Boolean?) {
-        if (state == null) return
-        if (state) {
-            btn_favorite.setIconResource(R.drawable.ic_favorite)
-        } else {
-            btn_favorite.setIconResource(R.drawable.ic_favorite_border)
-        }
     }
 
     private fun formatedGenres(rawGenres: String?): String? {

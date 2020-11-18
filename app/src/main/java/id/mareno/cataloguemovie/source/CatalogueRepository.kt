@@ -7,67 +7,47 @@ import id.mareno.cataloguemovie.model.entities.DetailTvEntity
 import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.*
 import id.mareno.cataloguemovie.source.local.LocalDataSource
-import id.mareno.cataloguemovie.source.remote.ApiResponse
-import id.mareno.cataloguemovie.source.remote.MovieDataSource
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
 import id.mareno.cataloguemovie.utils.AppExecutors
-import id.mareno.cataloguemovie.vo.Resource
 
-class MovieRepository private constructor(
+class CatalogueRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) :
-    MovieDataSource {
+    CatalogueDataSource {
 
     companion object {
         @Volatile
-        private var instance: MovieRepository? = null
+        private var instance: CatalogueRepository? = null
         fun getInstance(
             remoteData: RemoteDataSource,
-            localData: LocalDataSource,
+            localDataSource: LocalDataSource,
             appExecutors: AppExecutors
-        ): MovieRepository =
+        ): CatalogueRepository =
             instance ?: synchronized(this) {
-                instance ?: MovieRepository(remoteData, localData, appExecutors)
+                instance ?: CatalogueRepository(remoteData, localDataSource, appExecutors)
             }
     }
 
-    override fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>> {
-        return object :
-            NetworkBoundResource<List<TrendingMoviesEntity>, List<TrendingMovieResults>>(
-                appExecutors
-            ) {
-            override fun loadFromDB(): LiveData<List<TrendingMoviesEntity>> =
-                localDataSource.getAllTrendingMovies()
-
-
-            override fun shouldFetch(data: List<TrendingMoviesEntity>?): Boolean =
-                data == null || data.isEmpty()
-
-            override fun createCall(): LiveData<ApiResponse<List<TrendingMovieResults>>> =
-                remoteDataSource.getAllTrendingMovies()
-
-
-            override fun saveCallResult(data: List<TrendingMovieResults>) {
+    override fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>> {
+        val movieResults = MutableLiveData<List<TrendingMoviesEntity>>()
+        remoteDataSource.getAllTrendingMovies(object : RemoteDataSource.LoadTrendingMoviesCallback {
+            override fun onAllMoviesReceived(movieResponses: List<TrendingMovieResults>) {
                 val movieList = ArrayList<TrendingMoviesEntity>()
-                for (response in data) {
+                for (response in movieResponses) {
                     val movie = TrendingMoviesEntity(
                         response.id,
-                        response.genreIds,
-                        response.overview,
                         response.posterPath,
-                        response.releaseDate,
-                        response.title,
-                        response.voteAverage,
-                        false
+                        response.title
                     )
                     movieList.add(movie)
                 }
-                localDataSource.insertTrendingMovies(movieList)
+                movieResults.postValue(movieList)
             }
 
-        }.asLiveData()
+        })
+        return movieResults
     }
 
     override fun getAllTrendingTvs(): LiveData<List<TrendingTvResults>> {
@@ -150,17 +130,13 @@ class MovieRepository private constructor(
         remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovie {
             override fun onDetailMovieReceived(detailMovieResponses: DetailMovieResults) {
                 val detail = DetailMovieEntity(
-                    detailMovieResponses.backdropPath,
-                    detailMovieResponses.genres,
+                    detailMovieResponses.genres.toString(),
                     detailMovieResponses.id,
-                    detailMovieResponses.originalLanguage,
                     detailMovieResponses.overview,
                     detailMovieResponses.posterPath,
                     detailMovieResponses.releaseDate,
                     detailMovieResponses.title,
-                    detailMovieResponses.voteAverage,
-                    detailMovieResponses.voteCount,
-                    false
+                    detailMovieResponses.voteAverage
                 )
                 dataDetailMovie.postValue(detail)
             }
@@ -175,15 +151,14 @@ class MovieRepository private constructor(
             override fun onDetailTvReceived(detailTvResponses: DetailTvResults) {
                 val detail = DetailTvEntity(
                     detailTvResponses.releaseDate,
-                    detailTvResponses.genres,
+                    detailTvResponses.genres.toString(),
                     detailTvResponses.id,
                     detailTvResponses.title,
-                    detailTvResponses.numberOfEpisodes,
-                    detailTvResponses.numberOfSeasons,
+                    detailTvResponses.numberOfEpisodes.toString(),
+                    detailTvResponses.numberOfSeasons.toString(),
                     detailTvResponses.overview,
                     detailTvResponses.posterPath,
-                    detailTvResponses.voteAverage,
-                    false
+                    detailTvResponses.voteAverage
                 )
                 dataDetailTv.postValue(detail)
             }
@@ -192,11 +167,34 @@ class MovieRepository private constructor(
         return dataDetailTv
     }
 
-    override fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
-        localDataSource.getBookmarkedTrendingMovies()
+    override fun getBookmarkedMovies(): LiveData<List<DetailMovieEntity>> =
+        localDataSource.getBookmarkedMovies()
 
-    override fun setTrendingMovieBookmark(movie: TrendingMoviesEntity, state: Boolean) {
-        appExecutors.diskIO().execute { localDataSource.setTrendingMovieBookmark(movie, state) }
+
+    override fun setBookmarkMovie(movie: DetailMovieEntity) {
+        appExecutors.diskIO().execute { localDataSource.insertMovie(movie) }
     }
+
+    override fun deleteBookmarkMovie(movie: DetailMovieEntity) {
+        appExecutors.diskIO().execute { localDataSource.deleteMovie(movie) }
+    }
+
+    override fun getMovieOnRoom(movieId: Int): LiveData<DetailMovieEntity> =
+        localDataSource.getMovieFromRoom(movieId)
+
+    override fun getBookmarkedTvs(): LiveData<List<DetailTvEntity>> =
+        localDataSource.getBookmarkedTvs()
+
+
+    override fun setBookmarkTv(tv: DetailTvEntity) {
+        appExecutors.diskIO().execute { localDataSource.insertTv(tv) }
+    }
+
+    override fun deleteBookmarkTv(tv: DetailTvEntity) {
+        appExecutors.diskIO().execute { localDataSource.deleteTv(tv) }
+    }
+
+    override fun getTvOnRoom(tvId: Int): LiveData<DetailTvEntity> =
+        localDataSource.getTvFromRoom(tvId)
 
 }

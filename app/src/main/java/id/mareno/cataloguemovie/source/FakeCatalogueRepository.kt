@@ -8,14 +8,12 @@ import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
-import id.mareno.cataloguemovie.source.remote.MovieDataSource
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
-import id.mareno.cataloguemovie.vo.Resource
 
-class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
-    MovieDataSource {
+abstract class FakeCatalogueRepository(private val remoteDataSource: RemoteDataSource) :
+    CatalogueDataSource {
 
-    override fun getAllTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>> {
+    override fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>> {
         return MutableLiveData()
     }
 
@@ -101,8 +99,31 @@ class FakeMovieRepository(private val remoteDataSource: RemoteDataSource) :
         return MutableLiveData()
     }
 
-    override fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
-        MutableLiveData()
+    override fun getBookmarkedMovies(): LiveData<List<DetailMovieEntity>> {
+        return MutableLiveData()
+    }
 
-    override fun setTrendingMovieBookmark(movie: TrendingMoviesEntity, state: Boolean) {}
+    override fun setBookmarkMovie(movie: DetailMovieEntity) = Unit
+
+    override fun deleteBookmarkMovie(movie: DetailMovieEntity) = Unit
+
+    override fun getMovieOnRoom(movieId: Int): LiveData<DetailMovieEntity> {
+        return MutableLiveData()
+    }
+
+    override fun getBookmarkedTvs(): LiveData<List<DetailTvEntity>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun setBookmarkTv(tv: DetailTvEntity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteBookmarkTv(tv: DetailTvEntity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getTvOnRoom(tvId: Int): LiveData<DetailTvEntity> {
+        TODO("Not yet implemented")
+    }
 }

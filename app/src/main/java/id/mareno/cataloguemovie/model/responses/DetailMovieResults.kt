@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName
 import id.mareno.cataloguemovie.model.json.Genre
 
 data class DetailMovieResults(
-    @SerializedName("backdrop_path")
-    var backdropPath: String?,
     var genres: List<Genre>?,
     var id: Int?,
     @SerializedName("original_language")

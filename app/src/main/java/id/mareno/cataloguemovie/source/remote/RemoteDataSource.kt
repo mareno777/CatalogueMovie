@@ -1,8 +1,6 @@
 package id.mareno.cataloguemovie.source.remote
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import id.mareno.cataloguemovie.helper.ResponseHelper
 import id.mareno.cataloguemovie.model.responses.*
 
@@ -24,15 +22,10 @@ class RemoteDataSource private constructor(
             }
     }
 
-    fun getAllTrendingMovies(): LiveData<ApiResponse<List<TrendingMovieResults>>> {
-        val movieResults = MutableLiveData<ApiResponse<List<TrendingMovieResults>>>()
-        responseHelper.loadTrendingMovies().observe(lifecycleOwner, { movies ->
-            run {
-                movieResults.value = ApiResponse.success(movies)
-            }
+    fun getAllTrendingMovies(callback: LoadTrendingMoviesCallback) {
+        responseHelper.loadTrendingMovies().observe(lifecycleOwner, { movie ->
+            callback.onAllMoviesReceived(movie)
         })
-
-        return movieResults
     }
 
     fun getAllTrendingTvs(callback: LoadTrendingTvsCallback) {

@@ -2,24 +2,21 @@ package id.mareno.cataloguemovie.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
 
 @Dao
 interface MovieDao {
 
-    @Query("SELECT * FROM trendingmovie")
-    fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>>
+    @Query("SELECT * FROM detail_movie WHERE id = :movieId")
+    fun getMovieFromRoom(movieId: Int): LiveData<DetailMovieEntity>
 
-    @Query("SELECT * FROM trendingmovie where bookmarked = 1")
-    fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>>
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertMovie(movie: DetailMovieEntity)
 
-    @Transaction
-    @Query("SELECT * FROM trendingmovie WHERE id = :id")
-    fun getTrendingMoviesWithId(id: String): LiveData<TrendingMoviesEntity>
+    @Delete
+    fun deleteMovie(movie: DetailMovieEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTrendingMovie(movie: List<TrendingMoviesEntity>)
+    @Query("SELECT * FROM detail_movie")
+    fun getAllBokmarkedMovie(): LiveData<List<DetailMovieEntity>>
 
-    @Update
-    fun updateTrendingMovie(movie: TrendingMoviesEntity)
 }

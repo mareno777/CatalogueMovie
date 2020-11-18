@@ -4,11 +4,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
+import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
-import id.mareno.cataloguemovie.source.MovieRepository
+import id.mareno.cataloguemovie.source.CatalogueRepository
 import id.mareno.cataloguemovie.utils.DataDummy
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -29,7 +30,7 @@ class HomeViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var movieRepository: MovieRepository
+    private lateinit var movieRepository: CatalogueRepository
 
     @Mock
     private lateinit var observer: Observer<List<TrendingMovieResults>>
@@ -42,7 +43,7 @@ class HomeViewModelTest {
     @Test
     fun getTrendingMovies() {
         val dummyMovies = DataDummy.generateRemoteTrendingMovies()
-        val movies = MutableLiveData<List<TrendingMovieResults>>()
+        val movies = MutableLiveData<List<TrendingMoviesEntity>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllTrendingMovies()).thenReturn(movies)

@@ -1,32 +1,34 @@
 package id.mareno.cataloguemovie.source.local
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.DetailTvEntity
 
-class LocalDataSource private constructor(private val mMovieDao: MovieDao) {
-
+class LocalDataSource private constructor(
+    private val mMovieDao: MovieDao,
+    private val mTvDao: TvDao
+) {
     companion object {
         private var INSTANCE: LocalDataSource? = null
 
-        fun getInstance(movieDao: MovieDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(movieDao)
+        fun getInstance(movieDao: MovieDao, tvDao: TvDao): LocalDataSource =
+            INSTANCE ?: LocalDataSource(movieDao, tvDao)
     }
 
-    fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
-        mMovieDao.getAllTrendingMovies()
+    fun getBookmarkedMovies(): LiveData<List<DetailMovieEntity>> = mMovieDao.getAllBokmarkedMovie()
 
-    fun getBookmarkedTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
-        mMovieDao.getBookmarkedTrendingMovies()
+    fun getMovieFromRoom(movieId: Int): LiveData<DetailMovieEntity> =
+        mMovieDao.getMovieFromRoom(movieId)
 
-    fun setTrendingMovieBookmark(movie: TrendingMoviesEntity?, newState: Boolean) {
-        if (movie != null) {
-            movie.bookmarked = newState
-            mMovieDao.updateTrendingMovie(movie)
-            Log.d("BOOKMARKED_MOVIE", movie.title + newState.toString())
-        }
-    }
+    fun insertMovie(movie: DetailMovieEntity) = mMovieDao.insertMovie(movie)
 
-    fun insertTrendingMovies(movies: List<TrendingMoviesEntity>) =
-        mMovieDao.insertTrendingMovie(movies)
+    fun deleteMovie(movie: DetailMovieEntity) = mMovieDao.deleteMovie(movie)
+
+    fun getBookmarkedTvs(): LiveData<List<DetailTvEntity>> = mTvDao.getAllBokmarkedTvs()
+
+    fun getTvFromRoom(tvId: Int): LiveData<DetailTvEntity> = mTvDao.getTvFromRoom(tvId)
+
+    fun insertTv(tv: DetailTvEntity) = mTvDao.insertTv(tv)
+
+    fun deleteTv(tv: DetailTvEntity) = mTvDao.deleteTv(tv)
 }

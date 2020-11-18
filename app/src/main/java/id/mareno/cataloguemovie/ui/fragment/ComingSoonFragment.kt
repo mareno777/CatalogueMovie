@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.adapter.ComingSoonAdapter
 import id.mareno.cataloguemovie.viewmodel.ComingSoonViewModel
+import id.mareno.cataloguemovie.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_coming_soon.*
 
 class ComingSoonFragment : Fragment() {
@@ -43,9 +44,10 @@ class ComingSoonFragment : Fragment() {
         if (activity != null) {
 
 
+            val factory = ViewModelFactory.getInstance(viewLifecycleOwner, requireContext())
             comingSoonViewModel = ViewModelProvider(
                 requireActivity(),
-                ViewModelProvider.NewInstanceFactory()
+                factory
             )[ComingSoonViewModel::class.java]
 
             comingSoonViewModel.getMovieResults().observe(viewLifecycleOwner, { results ->

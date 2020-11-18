@@ -6,12 +6,11 @@ import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
-import id.mareno.cataloguemovie.source.MovieRepository
-import id.mareno.cataloguemovie.vo.Resource
+import id.mareno.cataloguemovie.source.CatalogueRepository
 
-class HomeViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+class HomeViewModel(private val movieRepository: CatalogueRepository) : ViewModel() {
 
-    fun getTrendingMovies(): LiveData<Resource<List<TrendingMoviesEntity>>> =
+    fun getTrendingMovies(): LiveData<List<TrendingMoviesEntity>> =
         movieRepository.getAllTrendingMovies()
 
     fun getTrendingTvs(): LiveData<List<TrendingTvResults>> = movieRepository.getAllTrendingTvs()

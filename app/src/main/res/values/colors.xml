@@ -3,8 +3,10 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorRed">#FF0000</color>
     <color name="notBlack">#121212</color>
     <color name="inActive">#4FEFEFEF</color>
-    <color name="dark_text">#C1C0C0</color>
+    <color name="dark_text">#DDDDDD</color>
     <color name="textColor">#B3FFFFFF</color>
+    <color name="white">#FFFFFF</color>
 </resources>
