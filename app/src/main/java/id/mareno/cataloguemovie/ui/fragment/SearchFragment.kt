@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_search.*
 class SearchFragment : Fragment() {
 
     private lateinit var searchViewModel: SearchViewModel
+    private lateinit var searchMovieAdapter: SearchMovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,17 +26,22 @@ class SearchFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        searchMovieAdapter = SearchMovieAdapter()
+
+        rv_search_movie.apply {
+            layoutManager = GridLayoutManager(context, 3)
+            setHasFixedSize(true)
+            adapter = searchMovieAdapter
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         if (activity != null) {
-            val searchMovieAdapter = SearchMovieAdapter()
-
-            rv_search_movie.apply {
-                layoutManager = GridLayoutManager(context, 3)
-                setHasFixedSize(true)
-                adapter = searchMovieAdapter
-            }
 
             search_toolbar.setMenuItem(toolbar.menu.findItem(R.id.action_search))
 
