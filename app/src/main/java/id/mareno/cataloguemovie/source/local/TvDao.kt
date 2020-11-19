@@ -1,8 +1,9 @@
 package id.mareno.cataloguemovie.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
-import id.mareno.cataloguemovie.model.entities.DetailTvEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
 
 @Dao
 interface TvDao {
@@ -16,5 +17,5 @@ interface TvDao {
     fun deleteTv(tv: DetailTvEntity)
 
     @Query("SELECT * FROM detail_tv")
-    fun getAllBokmarkedTvs(): LiveData<List<DetailTvEntity>>
+    fun getAllBokmarkedTvs(): DataSource.Factory<Int, DetailTvEntity>
 }

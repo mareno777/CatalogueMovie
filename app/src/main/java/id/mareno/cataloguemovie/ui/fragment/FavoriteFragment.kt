@@ -20,7 +20,6 @@ class FavoriteFragment : Fragment() {
     private lateinit var bookmarkMovieAdapter: BookmarkMovieAdapter
     private lateinit var bookmarkTvAdapter: BookmarkTvAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,7 +64,7 @@ class FavoriteFragment : Fragment() {
             } else {
                 rv_favorite_movie.visibility = View.VISIBLE
                 tv_empty_movie.visibility = View.GONE
-                bookmarkMovieAdapter.setData(movies)
+                bookmarkMovieAdapter.submitList(movies)
             }
         })
 
@@ -76,7 +75,7 @@ class FavoriteFragment : Fragment() {
             } else {
                 tv_empty_tv.visibility = View.GONE
                 rv_favorite_tv.visibility = View.VISIBLE
-                bookmarkTvAdapter.setData(tvShows)
+                bookmarkTvAdapter.submitList(tvShows)
             }
         })
     }

@@ -2,15 +2,16 @@ package id.mareno.cataloguemovie.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
-import id.mareno.cataloguemovie.model.entities.DetailTvEntity
+import androidx.paging.PagedList
+import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
 import id.mareno.cataloguemovie.source.CatalogueRepository
 
 class FavoriteViewModel(private val catalogueRepository: CatalogueRepository) : ViewModel() {
 
-    fun retrieveBookmarkedMovies(): LiveData<List<DetailMovieEntity>> =
+    fun retrieveBookmarkedMovies(): LiveData<PagedList<DetailMovieEntity>> =
         catalogueRepository.getBookmarkedMovies()
 
-    fun retrieveBookmarkedTvs(): LiveData<List<DetailTvEntity>> =
+    fun retrieveBookmarkedTvs(): LiveData<PagedList<DetailTvEntity>> =
         catalogueRepository.getBookmarkedTvs()
 }

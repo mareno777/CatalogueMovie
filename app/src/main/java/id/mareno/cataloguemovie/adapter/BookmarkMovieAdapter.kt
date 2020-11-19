@@ -5,24 +5,37 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
-class BookmarkMovieAdapter : RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkViewHolder>() {
-    private val movieList = ArrayList<DetailMovieEntity>()
+class BookmarkMovieAdapter internal constructor() :
+    PagedListAdapter<DetailMovieEntity, BookmarkMovieAdapter.BookmarkViewHolder>(DIFF_CALLBACK) {
 
-    fun setData(movies: List<DetailMovieEntity>) {
-        movieList.clear()
-        movieList.addAll(movies)
-        notifyDataSetChanged()
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DetailMovieEntity>() {
+            override fun areItemsTheSame(
+                oldItem: DetailMovieEntity,
+                newItem: DetailMovieEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: DetailMovieEntity,
+                newItem: DetailMovieEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         val view =
@@ -31,10 +44,11 @@ class BookmarkMovieAdapter : RecyclerView.Adapter<BookmarkMovieAdapter.BookmarkV
     }
 
     override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
-        holder.bind(movieList[position])
+        val movie = getItem(position)
+        if (movie != null) {
+            holder.bind(movie)
+        }
     }
-
-    override fun getItemCount(): Int = movieList.size
 
     inner class BookmarkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: DetailMovieEntity) {

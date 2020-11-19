@@ -2,7 +2,6 @@ package id.mareno.cataloguemovie.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
 import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
@@ -10,30 +9,16 @@ import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
-import id.mareno.cataloguemovie.model.responses.*
-import id.mareno.cataloguemovie.source.local.LocalDataSource
+import id.mareno.cataloguemovie.model.responses.PopularMovieResults
+import id.mareno.cataloguemovie.model.responses.PopularTvResults
+import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
+import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
-import id.mareno.cataloguemovie.utils.AppExecutors
 
-class CatalogueRepository private constructor(
-    private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource,
-    private val appExecutors: AppExecutors
+class FakeCatalogueRepository(
+    private val remoteDataSource: RemoteDataSource
 ) :
     CatalogueDataSource {
-
-    companion object {
-        @Volatile
-        private var instance: CatalogueRepository? = null
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localDataSource: LocalDataSource,
-            appExecutors: AppExecutors
-        ): CatalogueRepository =
-            instance ?: synchronized(this) {
-                instance ?: CatalogueRepository(remoteData, localDataSource, appExecutors)
-            }
-    }
 
     override fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>> {
         val movieResults = MutableLiveData<List<TrendingMoviesEntity>>()
@@ -43,14 +28,13 @@ class CatalogueRepository private constructor(
                 for (response in movieResponses) {
                     val movie = TrendingMoviesEntity(
                         response.id,
-                        response.posterPath,
-                        response.title
+                        response.title,
+                        response.posterPath
                     )
                     movieList.add(movie)
                 }
                 movieResults.postValue(movieList)
             }
-
         })
         return movieResults
     }
@@ -108,7 +92,7 @@ class CatalogueRepository private constructor(
                     val movie = PopularTvsEntity(
                         response.id,
                         response.title,
-                        response.posterPath,
+                        response.posterPath
                     )
                     movieList.add(movie)
                 }
@@ -120,95 +104,38 @@ class CatalogueRepository private constructor(
     }
 
     override fun getDetailMovie(id: Int): LiveData<DetailMovieEntity?> {
-        val dataDetailMovie = MutableLiveData<DetailMovieEntity?>()
-
-        remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovie {
-            override fun onDetailMovieReceived(detailMovieResponses: DetailMovieResults?) {
-                if (detailMovieResponses == null) {
-                    dataDetailMovie.postValue(null)
-                } else {
-                    val detail = DetailMovieEntity(
-                        detailMovieResponses.genres.toString(),
-                        detailMovieResponses.id,
-                        detailMovieResponses.overview,
-                        detailMovieResponses.posterPath,
-                        detailMovieResponses.releaseDate,
-                        detailMovieResponses.title,
-                        detailMovieResponses.voteAverage
-                    )
-                    dataDetailMovie.postValue(detail)
-                }
-            }
-        })
-        return dataDetailMovie
+        return MutableLiveData()
     }
 
     override fun getDetailTv(id: Int): LiveData<DetailTvEntity?> {
-        val dataDetailTv = MutableLiveData<DetailTvEntity?>()
-
-        remoteDataSource.getDetailTv(id, object : RemoteDataSource.LoadDetailTv {
-            override fun onDetailTvReceived(detailTvResponses: DetailTvResults?) {
-                if (detailTvResponses == null) {
-                    dataDetailTv.postValue(null)
-                } else {
-                    val detail = DetailTvEntity(
-                        detailTvResponses.releaseDate,
-                        detailTvResponses.genres.toString(),
-                        detailTvResponses.id,
-                        detailTvResponses.title,
-                        detailTvResponses.numberOfEpisodes.toString(),
-                        detailTvResponses.numberOfSeasons.toString(),
-                        detailTvResponses.overview,
-                        detailTvResponses.posterPath,
-                        detailTvResponses.voteAverage
-                    )
-                    dataDetailTv.postValue(detail)
-                }
-            }
-        })
-        return dataDetailTv
+        return MutableLiveData()
     }
 
     override fun getBookmarkedMovies(): LiveData<PagedList<DetailMovieEntity>> {
-        val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(5)
-            .setPageSize(5)
-            .build()
-        return LivePagedListBuilder(localDataSource.getBookmarkedMovies(), config).build()
+        return MutableLiveData()
     }
 
+    override fun setBookmarkMovie(movie: DetailMovieEntity) = Unit
 
-    override fun setBookmarkMovie(movie: DetailMovieEntity) {
-        appExecutors.diskIO().execute { localDataSource.insertMovie(movie) }
+    override fun deleteBookmarkMovie(movie: DetailMovieEntity) = Unit
+
+    override fun getMovieOnRoom(movieId: Int): LiveData<DetailMovieEntity> {
+        return MutableLiveData()
     }
-
-    override fun deleteBookmarkMovie(movie: DetailMovieEntity) {
-        appExecutors.diskIO().execute { localDataSource.deleteMovie(movie) }
-    }
-
-    override fun getMovieOnRoom(movieId: Int): LiveData<DetailMovieEntity> =
-        localDataSource.getMovieFromRoom(movieId)
 
     override fun getBookmarkedTvs(): LiveData<PagedList<DetailTvEntity>> {
-        val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(5)
-            .setPageSize(5)
-            .build()
-        return LivePagedListBuilder(localDataSource.getBookmarkedTvs(), config).build()
+        return MutableLiveData()
     }
 
-
     override fun setBookmarkTv(tv: DetailTvEntity) {
-        appExecutors.diskIO().execute { localDataSource.insertTv(tv) }
+        TODO("Not yet implemented")
     }
 
     override fun deleteBookmarkTv(tv: DetailTvEntity) {
-        appExecutors.diskIO().execute { localDataSource.deleteTv(tv) }
+        TODO("Not yet implemented")
     }
 
-    override fun getTvOnRoom(tvId: Int): LiveData<DetailTvEntity> =
-        localDataSource.getTvFromRoom(tvId)
-
+    override fun getTvOnRoom(tvId: Int): LiveData<DetailTvEntity> {
+        return MutableLiveData()
+    }
 }

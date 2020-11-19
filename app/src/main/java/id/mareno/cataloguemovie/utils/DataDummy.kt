@@ -1,237 +1,49 @@
 package id.mareno.cataloguemovie.utils
 
+import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
+import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
+import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
 import id.mareno.cataloguemovie.model.responses.PopularMovieResults
 import id.mareno.cataloguemovie.model.responses.PopularTvResults
 import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 import id.mareno.cataloguemovie.model.responses.TrendingTvResults
 
 object DataDummy {
-    /*
+
     fun generateTrendingMovies(): List<TrendingMoviesEntity> {
         val movies = ArrayList<TrendingMoviesEntity>()
 
-        movies.add(
-            TrendingMoviesEntity(
-                "Brutus vs César",
-                "https://m.media-amazon.com/images/M/MV5BM2M2OGJiZTQtOWJkZi00YTdkLWFiOTMtNWZkZDhkOWQ5OTQ1XkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
-                "2020-09-18",
-                "3.6",
-                "Faced with the tyranny of Caesar who acts as absolute master over Rome, Senators Rufus and Cassius form a plot to assassinate him",
-                "Comedy"
-            )
+        for (i in 0 until 21) {
+            movies.add(
+                TrendingMoviesEntity(
+                    i,
+                    "https://m.media-amazon.com/images/M/MV5BM2M2OGJiZTQtOWJkZi00YTdkLWFiOTMtNWZkZDhkOWQ5OTQ1XkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
+                    "dummyTitle"
+                )
 
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Whipped",
-                "https://m.media-amazon.com/images/M/MV5BZTU4MGZlNDEtNDU4ZC00OTJiLWI3OWYtZmNjZjMwNzUwYWVmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
-                "2020-09-18",
-                "4.4",
-                "Andovi, Tommy, Jovi, and Chandra try to get out of unhealthy relationships because they are \"bucin\" (slaves of love). They decide to take the \"antibucin\" class so they can have a more mature relationship, and not be enslaved by love. It turns out that the method of teaching, taught by Vania, is very extreme. Even threatening their love and friendship relationships.",
-                "Comedy, Romance"
             )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "The Paramedic",
-                "https://m.media-amazon.com/images/M/MV5BNWE5ODJjNzUtMjk5YS00ZGVhLWI3NWQtNDc5MjU2ZWNhZjllXkEyXkFqcGdeQXVyMTM2Mzg4MA@@._V1_.jpg",
-                "2020-09-16",
-                "5.6",
-                "Angel works in an ambulance service. After a tragic accident, his personal life begins to deteriorate as he becomes more and more suspicious of his partner Vane.",
-                "Drama, Thriller"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Evil Takes Root",
-                "https://m.media-amazon.com/images/M/MV5BMTA1ODcwNmQtNDFjMC00ZWQxLWIwNjctZmU2Njc1ZjkwZTM1XkEyXkFqcGdeQXVyNjI2NDU5NDE@._V1_.jpg",
-                "2020-09-15",
-                "3.9",
-                "A paranormal investigator arrives in a sleepy Midwest town to investigate the mysterious loss of his old lover and reconcile sins of the past. He discovers she fell victim to the Batibat, an ancient evil that followed her home from the Philippines.",
-                "Horror, Thriller"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Fear Pharm",
-                "https://m.media-amazon.com/images/M/MV5BYzQ5NzU4Y2MtNGYwOC00ZmY2LTk0NmMtOWM0ZjlmMmE4YWE2XkEyXkFqcGdeQXVyMTQ2OTU2OTQ@._V1_.jpg",
-                "2020-09-11",
-                "3.7",
-                "Four people enter a corn maze for Halloween and are picked off one by one by the twisted family who own the scare attraction.",
-                "Horror"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Conjuring the Devil",
-                "https://m.media-amazon.com/images/M/MV5BMzM0MjY0YzItMjAwOS00MDdmLWJiM2UtZjQ2MmI0N2UwMDI5XkEyXkFqcGdeQXVyMTA0Mzg1Mjg@._V1_.jpg",
-                "2020-09-15",
-                "1.9",
-                "A woman who is struggling with the conflict between her faith and her personal life must defend herself against the spirit of a demonic nun who is bent on destroying her.",
-                "Horror"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Cats & Dogs 3: Paws Unite",
-                "https://m.media-amazon.com/images/M/MV5BYjgzODg2M2ItNzgwMS00ZDRjLWIwMTQtNmQxODE0MjAxY2RkXkEyXkFqcGdeQXVyMzAwNzMwNjY@._V1_.jpg",
-                "2020-09-15",
-                "4.4",
-                "Gwen the Cat and Roger the Dog are secret agents who covertly protect and save the world without humans ever finding out. Their partnership is due to the Great Truce, which has stopped dog and cat hostility for a decade. But the long-standing peace is threatened when a supervillain parrot discovers a way to manipulate wireless frequencies that only dogs and cats can hear. Will the heroes be able to stop the foul fowl, or will he cause a cat-a-strophe between the species?",
-                "Action, Comedy, Family, Fantasy"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Intersect",
-                "https://m.media-amazon.com/images/M/MV5BZjUxOTljODQtNDAzMi00NzNkLWI5N2YtMDQ3Yjk0N2FkYmRmXkEyXkFqcGdeQXVyNjcxODY5OQ@@._V1_.jpg",
-                "2020-09-15",
-                "4.3",
-                "A group of young Miskatonic University scientists invent a time machine, only to learn that they are being manipulated by mysterious, unseen forces from another dimension.",
-                "Horror, Sci-Fi, Thriller"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Super Monsters: The New Class",
-                "https://m.media-amazon.com/images/M/MV5BMzFlY2U4MDUtMjE0Mi00ZjFmLTgwMzgtMGZlNDliYTE0ZjA3XkEyXkFqcGdeQXVyMTAwMzM3NDI3._V1_.jpg",
-                "2020-08-01",
-                "5.9",
-                "A new class of pint-sized preschoolers arrives at Pitchfork Pines, and the Super Monsters take their superpowers to the next level - the Purple Room.",
-                "Short, Animation, Family"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "Howling Village",
-                "https://m.media-amazon.com/images/M/MV5BMzYyOTI1YTctNTUzZi00YTRmLTlmMjctMWQxZmM1NWQ5MmRkXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg",
-                "2020-02-07",
-                "4.8",
-                "The legend and fright of of the Inunaki village of Japan comes back to life. Everything there is cursed and morbid. Moreover, the village actually exists. Enter Kanae a licensed and practicing psychologist who not only is curious vocationally, but herself can communicate with the spirits. She finds herself personally involved when her brother and his girlfriend find themselves in trouble within the limits of Inunaki.",
-                "Horror"
-            )
-        )
-        movies.add(
-            TrendingMoviesEntity(
-                "The Coming",
-                "https://m.media-amazon.com/images/M/MV5BMDIwMDc5NzktNzRlNy00MDU2LWIwMTItOGVmOTcwN2Q3OTUwXkEyXkFqcGdeQXVyNzk5ODY5Njk@._V1_.jpg",
-                "2020-09-01",
-                "2.3",
-                "Two young best friends who are forced to stick together as things around them change for the worst. As things begin to fall apart, they realize the events in the book of Revelation are being unveiled right before their very eyes. They soon discover that the book is actually their reality and a guide for what will soon take place. ",
-                "Action, Sci-Fi, Thriller"
-            )
-        )
+        }
+
         return movies
     }
 
-    fun generateTrendingTvs(): List<TrendingMoviesEntity> {
-        val crimeMovieShow = ArrayList<TrendingMoviesEntity>()
+    fun generateTrendingTvs(): List<TrendingTvsEntity> {
+        val tvShow = ArrayList<TrendingTvsEntity>()
 
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "Enola Holmes",
-                "https://m.media-amazon.com/images/M/MV5BZjNkNzk0ZjEtM2M1ZC00MmMxLTlmOWEtNWRlZTc1ZTUyNzY4XkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg",
-                "2020-09-23",
-                "7.4",
-                "England, 1884 - a world on the brink of change. On the morning of her 16th birthday, Enola Holmes (Millie Bobby Brown) wakes to find that her mother (Helena Bonham Carter) has disappeared, leaving behind an odd assortment of gifts but no apparent clue as to where she's gone or why. After a free-spirited childhood, Enola suddenly finds herself under the care of her brothers Sherlock (Henry Cavill) and Mycroft (Sam Claflin), both set on sending her away to a finishing school for \"proper\" young ladies. Refusing to follow their wishes, Enola escapes to search for her mother in London. But when her journey finds her entangled in a mystery surrounding a young runaway Lord (Louis Partridge), Enola becomes a super-sleuth in her own right, outwitting her famous brother as she unravels a conspiracy that threatens to set back the course of history.",
-                "Adventure, Crime, Drama, Mystery"
+        for (i in 0 until 21) {
+            tvShow.add(
+                TrendingTvsEntity(
+                    i,
+                    "title $i",
+                    "posterpath"
+                )
             )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "Knives Out",
-                "https://m.media-amazon.com/images/M/MV5BMGUwZjliMTAtNzAxZi00MWNiLWE2NzgtZGUxMGQxZjhhNDRiXkEyXkFqcGdeQXVyNjU1NzU3MzE@._V1_.jpg",
-                "2019-11-27",
-                "7.9",
-                "When renowned crime novelist Harlan Thrombey (Christopher Plummer) is found dead at his estate just after his 85th birthday, the inquisitive and debonair Detective Benoit Blanc (Daniel Craig) is mysteriously enlisted to investigate. From Harlan's disfunctional family to his devoted staff, Blanc sifts through a web of red herrings and self-serving lies to uncover the truth behind Harlan's untimely death.",
-                "Comedy, Crime, Drama, Mystery, Thriller"
-            )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "Ava",
-                "https://m.media-amazon.com/images/M/MV5BMTMzMTg1MjgtOWNhYy00NmZmLWExOTctMjA2OTZhZDFkNDhhXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg",
-                "2020-09-25",
-                "5.3",
-                "Ava is a deadly assassin who works for a black ops organization, traveling the globe specializing in high profile hits. When a job goes dangerously wrong she is forced to fight for her own survival.",
-                "Action, Crime, Drama, Thriller"
-            )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "Joker",
-                "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-                "2019-10-04",
-                "8.5",
-                "Arthur Fleck works as a clown and is an aspiring stand-up comic. He has mental health issues, part of which involves uncontrollable laughter. Times are tough and, due to his issues and occupation, Arthur has an even worse time than most. Over time these issues bear down on him, shaping his actions, making him ultimately take on the persona he is more known as...Joker.",
-                "Crime, Drama, Thriller"
-            )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "Zodiac",
-                "https://m.media-amazon.com/images/M/MV5BN2UwNDc5NmEtNjVjZS00OTI5LWE5YjctMWM3ZjBiZGYwMGI2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
-                "2007-03-02",
-                "7.7",
-                "A serial killer in the San Francisco Bay Area taunts police with his letters and cryptic messages. We follow the investigators and reporters in this lightly fictionalized account of the true 1970's case as they search for the murderer, becoming obsessed with the case. Based on Robert Graysmith's book, the movie's focus is the lives and careers of the detectives and newspaper people.",
-                "Crime, Drama, Mystery, Thriller"
-            )
-
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "The Dark Knight",
-                "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg",
-                "2008-07-18",
-                "9.0",
-                "Set within a year after the events of Batman Begins (2005), Batman, Lieutenant James Gordon, and new District Attorney Harvey Dent successfully begin to round up the criminals that plague Gotham City, until a mysterious and sadistic criminal mastermind known only as \"The Joker\" appears in Gotham, creating a new wave of chaos. Batman's struggle against The Joker becomes deeply personal, forcing him to \"confront everything he believes\" and improve his technology to stop him. A love triangle develops between Bruce Wayne, Dent, and Rachel Dawes.",
-                "Action, Crime, Drama, Thriller"
-            )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "Harley Quinn: Birds of Prey",
-                "https://m.media-amazon.com/images/M/MV5BMzQ3NTQxMjItODBjYi00YzUzLWE1NzQtZTBlY2Y2NjZlNzkyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-                "2020-02-07",
-                "6.1",
-                "A twisted tale told by Harley Quinn herself, when Gotham's most nefariously narcissistic villain, Roman Sionis, and his zealous right-hand, Zsasz, put a target on a young girl named Cass, the city is turned upside down looking for her. Harley, Huntress, Black Canary and Renee Montoya's paths collide, and the unlikely foursome have no choice but to team up to take Roman down.",
-                "Action, Adventure, Crime"
-            )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "The Devil All the Time",
-                "https://m.media-amazon.com/images/M/MV5BZmE1NmVmN2EtMjZmZC00YzAyLWE4MWEtYjY5YmExMjUxODU1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-                "2020-09-16",
-                "7.2",
-                "Set in rural southern Ohio and West Virginia, The Devil All the Time follows a cast of compelling and bizarre characters from the end of World War II to the 1960s. There's Willard Russell, tormented veteran of the carnage in the South Pacific, who can't save his beautiful wife, Charlotte, from an agonizing death by cancer no matter how much sacrificial blood he pours on his \"prayer log.\" There's Carl and Sandy Henderson, a husband-and-wife team of serial killers, who troll America's highways searching for suitable models to photograph and exterminate. There's the spider-handling preacher Roy and his crippled virtuoso-guitar-playing sidekick, Theodore, running from the law. And caught in the middle of all this is Arvin Eugene Russell, Willard and Charlotte's orphaned son, who grows up to be a good but also violent man in his own right.",
-                "Crime, Drama, Thriller"
-            )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "The Gentlemen",
-                "https://m.media-amazon.com/images/M/MV5BMTlkMmVmYjktYTc2NC00ZGZjLWEyOWUtMjc2MDMwMjQwOTA5XkEyXkFqcGdeQXVyNTI4MzE4MDU@._V1_.jpg",
-                "2020-01-24",
-                "7.9",
-                "A talented American graduate of Oxford, using his unique skills, and audacity, creates a marijuana empire using the estates of impoverished British aristocrats. However, when he tries to sell his empire to a fellow American billionaire, a chain of events unfolds, involving blackmail, deception, mayhem and murder between street thugs, Russian oligarchs, Triad gangsters and gutter journalists.",
-                "Action, Comedy, Crime"
-            )
-        )
-        crimeMovieShow.add(
-            TrendingMoviesEntity(
-                "21 Bridges",
-                "https://m.media-amazon.com/images/M/MV5BYTg4YzEzNDQtZDAxOS00M2YyLTljZWEtNjk4YTc4NDM2NTBhXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
-                "2019-11-22",
-                "6.6",
-                "Thrust into a citywide manhunt for a duo of cop killers, NYPD detective Andre Davis begins to uncover a massive conspiracy that links his fellow police officers to a criminal empire and must decide who he is hunting and who is actually hunting him. During the manhunt, Manhattan is completely locked down for the first time in its history - no exit or entry to the island including all 21 bridges.",
-                "Action, Crime, Drama, Thriller"
-            )
-        )
-
-        return crimeMovieShow
+        }
+        return tvShow
     }
 
+    /*
     fun generatePopularMovies(): List<TrendingMoviesEntity> {
         val popularMovie = ArrayList<TrendingMoviesEntity>()
 
@@ -458,6 +270,7 @@ object DataDummy {
 
      */
 
+
     fun generateRemoteTrendingMovies(): List<TrendingMovieResults> {
         val movie = ArrayList<TrendingMovieResults>()
         for (i in 0 until 21) {
@@ -476,30 +289,15 @@ object DataDummy {
 
     fun generateRemoteTrendingTvs(): List<TrendingTvResults> {
         val movie = ArrayList<TrendingTvResults>()
-        val fakeGenres: List<Int>? = listOf(28, 12, 16)
-
-        movie.add(
-            TrendingTvResults(
-                "19-01-2020",
-                fakeGenres,
-                67859,
-                "Fake Title",
-                "Fake Overview",
-                "Fake Posterpath",
-                7.8
+        for (i in 0 until 21) {
+            movie.add(
+                TrendingTvResults(
+                    i,
+                    "title $i",
+                    "posterpath"
+                )
             )
-        )
-        movie.add(
-            TrendingTvResults(
-                "19-01-2020",
-                fakeGenres,
-                67859,
-                "Fake Title",
-                "Fake Overview",
-                "Fake Posterpath",
-                7.8
-            )
-        )
+        }
         return movie
     }
 
@@ -534,5 +332,38 @@ object DataDummy {
         }
         return movie
 
+    }
+
+    fun generatePopularTvs(): List<PopularTvsEntity> {
+        val movie = ArrayList<PopularTvsEntity>()
+
+        for (i in 0 until 21) {
+
+            movie.add(
+                PopularTvsEntity(
+                    i,
+                    "tilte",
+                    "poster",
+                )
+            )
+        }
+        return movie
+
+    }
+
+    fun generatePopularMovies(): List<PopularMoviesEntity> {
+        val movie = ArrayList<PopularMoviesEntity>()
+
+        for (i in 0 until 21) {
+
+            movie.add(
+                PopularMoviesEntity(
+                    i,
+                    "tilte",
+                    "poster",
+                )
+            )
+        }
+        return movie
     }
 }

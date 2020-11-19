@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.adapter.PopularMoviesAdapter
 import id.mareno.cataloguemovie.adapter.PopularTvShowsAdapter
@@ -84,13 +86,10 @@ class HomeFragment : Fragment() {
         startTrendingMovieShimmer(true)
 
         homeViewModel.getTrendingMovies().observe(viewLifecycleOwner, { movies ->
-            if (movies != null) {
-                startTrendingMovieShimmer(false)
-                trendingMovieAdapter.setData(movies)
-                trendingMovieAdapter.notifyDataSetChanged()
-            }
-        }
-        )
+            if (movies.isEmpty()) return@observe
+            startTrendingMovieShimmer(false)
+            trendingMovieAdapter.setData(movies)
+        })
 
     }
 
@@ -98,6 +97,8 @@ class HomeFragment : Fragment() {
         startTrendingTvShimmer(true)
 
         homeViewModel.getTrendingTvs().observe(viewLifecycleOwner, { movies ->
+            if (movies.isEmpty()) return@observe
+
             startTrendingTvShimmer(false)
             trendingTvAdapter.setData(movies)
         })
@@ -108,6 +109,9 @@ class HomeFragment : Fragment() {
         startPopularMovieShimmer(true)
 
         homeViewModel.getPopularMovies().observe(viewLifecycleOwner, { movies ->
+
+            if (movies.isEmpty()) return@observe
+
             startPopularMovieShimmer(false)
             popularMoviesAdapter.setData(movies)
         })
@@ -117,6 +121,26 @@ class HomeFragment : Fragment() {
         startPopularTvShimmer(true)
 
         homeViewModel.getPopularTvs().observe(viewLifecycleOwner, { movies ->
+            val snackbar =
+                Snackbar.make(
+                    tv_most_popular,
+                    "Something went wrong",
+                    Snackbar.LENGTH_SHORT
+                )
+
+            snackbar.apply {
+                setAction("RETRY") {
+                    populatePopularTv()
+                    populatePopularMovies()
+                    populateTrendingTvNow()
+                    populateTrendingMovieNow()
+                }
+                setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorRed))
+            }
+            if (movies.isEmpty()) {
+                snackbar.show()
+                return@observe
+            }
             startPopularTvShimmer(false)
             popularTvShowsAdapter.setData(movies)
         })

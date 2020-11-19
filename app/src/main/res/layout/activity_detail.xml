@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraint_layout"
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context=".ui.activity.DetailActivity">
 
     <ImageButton
@@ -21,179 +22,195 @@
         tools:ignore="ContentDescription" />
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/image_cardview"
-        android:layout_width="125dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/image_inside"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/coming_soon_image" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_detail_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image_cardview"
-        android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_cardview">
+        app:shimmer_duration="1000">
 
-        <TextView
-            android:id="@+id/tv_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="@string/new1"
-            android:textColor="#09FF00"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        <include layout="@layout/detail_shimmer" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <TextView
-            android:id="@+id/tv_release_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/textColor"
-            android:textSize="18sp"
-            tools:text="12 September 2020" />
-
-        <TextView
-            android:id="@+id/tv_rating_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="18sp"
-            tools:text="Rating: 4.6" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_genres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:textColor="@color/textColor"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:text="Drama, Horror, Thriller" />
-
-    <TextView
-        android:id="@+id/tv_seasons_episodes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/textColor"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_genres"
-        tools:text="6 Seasons • 40 Episodes " />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_share"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:shadowColor="#32FFFFFF"
-        android:stateListAnimator="@null"
-        android:text="@string/share"
-        android:textColor="#FFF"
-        app:backgroundTint="#32FFFFFF"
-        app:cornerRadius="5dp"
-        app:icon="@drawable/ic_share_24"
-        app:iconGravity="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_seasons_episodes" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="gone">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_favorite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:stateListAnimator="@null"
-        android:text="@string/favorite"
-        android:textColor="#FFF"
-        app:backgroundTint="#32FFFFFF"
-        app:icon="@drawable/ic_favorite_border"
-        app:iconGravity="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_share" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/image_cardview"
+            android:layout_width="125dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="2"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/btn_favorite"
-        tools:ignore="SpUsage"
-        tools:text="ini judul" />
-
-    <ScrollView
-        android:id="@+id/scroll_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title">
+            <ImageView
+                android:id="@+id/image_inside"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                tools:ignore="ContentDescription" />
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_below="@id/image_cardview"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_cardview">
 
             <TextView
-                android:id="@+id/tv_plot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:justificationMode="inter_word"
-                android:padding="8dp"
-                android:scrollbars="vertical"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title"
-                tools:targetApi="o"
-                tools:text="ini plot" />
-
-            <TextView
-                android:id="@+id/tv_source"
+                android:id="@+id/tv_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/source"
+                android:layout_marginEnd="8dp"
+                android:text="@string/new1"
+                android:textColor="#09FF00"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:textColor="@color/textColor"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                tools:text="12 September 2020" />
+
+            <TextView
+                android:id="@+id/tv_rating_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="18sp"
+                tools:text="Rating: 4.6" />
         </LinearLayout>
-    </ScrollView>
+
+        <TextView
+            android:id="@+id/tv_genres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            tools:text="Drama, Horror, Thriller" />
+
+        <TextView
+            android:id="@+id/tv_seasons_episodes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_genres"
+            tools:text="6 Seasons • 40 Episodes " />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:shadowColor="#32FFFFFF"
+            android:stateListAnimator="@null"
+            android:text="@string/share"
+            android:textColor="#FFF"
+            app:backgroundTint="#32FFFFFF"
+            app:cornerRadius="5dp"
+            app:icon="@drawable/ic_share_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_seasons_episodes" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:stateListAnimator="@null"
+            android:text="@string/favorite"
+            android:textColor="#FFF"
+            app:backgroundTint="#32FFFFFF"
+            app:icon="@drawable/ic_favorite_border"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_share" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="2"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/btn_favorite"
+            tools:ignore="SpUsage"
+            tools:text="ini judul" />
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_plot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:padding="8dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                    tools:targetApi="o"
+                    tools:text="ini plot" />
+
+                <TextView
+                    android:id="@+id/tv_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/source"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

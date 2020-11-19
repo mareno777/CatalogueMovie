@@ -37,7 +37,7 @@ class ViewModelFactory private constructor(private val catalogueRepository: Cata
                 FavoriteViewModel(catalogueRepository) as T
             }
             modelClass.isAssignableFrom(ComingSoonViewModel::class.java) -> {
-                ComingSoonViewModel(catalogueRepository) as T
+                ComingSoonViewModel() as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

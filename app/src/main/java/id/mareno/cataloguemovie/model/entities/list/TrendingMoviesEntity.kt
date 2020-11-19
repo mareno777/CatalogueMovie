@@ -1,4 +1,4 @@
-package id.mareno.cataloguemovie.model.entities
+package id.mareno.cataloguemovie.model.entities.list
 
 import com.google.gson.annotations.SerializedName
 

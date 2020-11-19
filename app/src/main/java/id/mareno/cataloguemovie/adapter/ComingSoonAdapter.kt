@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.app.ShareCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.model.responses.ComingSoonMovieResults
 import kotlinx.android.synthetic.main.coming_soon_list.view.*
@@ -57,12 +56,7 @@ class ComingSoonAdapter(private val activity: Activity) :
                         startChooser()
                     }
                 }
-
-                btn_favorite.setOnClickListener {
-                    Snackbar.make(this, "Coming Soon", Snackbar.LENGTH_SHORT).show()
-                }
             }
-
         }
     }
 

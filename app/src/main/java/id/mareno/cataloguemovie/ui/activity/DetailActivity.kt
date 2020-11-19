@@ -13,9 +13,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.snackbar.Snackbar
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
-import id.mareno.cataloguemovie.model.entities.DetailTvEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
+import id.mareno.cataloguemovie.utils.EspressoIdlingResource
 import id.mareno.cataloguemovie.viewmodel.DetailMovieViewModel
 import id.mareno.cataloguemovie.viewmodel.ViewModelFactory
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -58,9 +60,10 @@ class DetailActivity : AppCompatActivity() {
         val extras = intent.extras
 
         if (extras != null) {
-
+            startShimmer(true)
             val type = extras.getString(EXTRA_TYPE)
             movieId = extras.getInt(EXTRA_ID, 0)
+
             if (type == "movie" && movieId != 0) {
 
                 dataType = MOVIE_TYPE
@@ -68,26 +71,17 @@ class DetailActivity : AppCompatActivity() {
 
                 detailMovieViewModel.getMovieByRoom().observe(this, { data ->
                     if (data == null) {
+                        EspressoIdlingResource.increment()
                         stateUnbookmarked()
+                        populateMovieFromApi()
                     } else {
                         stateBookmarked()
+                        populateMovieFromRoom(data)
                     }
                 })
                 tv_seasons_episodes.visibility = View.GONE
-
-                // mengambil detail movie
-                detailMovieViewModel.getDetailMovie().observe(this, { movie ->
-                    title = movie.title
-                    image = movie.posterPath
-                    oldDate = movie.releaseDate
-                    rating = movie.voteAverage
-                    plot = movie.overview
-                    genres = movie.genres.toString()
-                    link = "movie/${movie.id.toString()}"
-
-                    populateDetail()
-                })
             }
+
 
             if (type == "tv" && movieId != 0) {
 
@@ -97,23 +91,11 @@ class DetailActivity : AppCompatActivity() {
                 detailMovieViewModel.getTvByRoom().observe(this, { data ->
                     if (data == null) {
                         stateUnbookmarked()
+                        populateTvFromApi()
                     } else {
                         stateBookmarked()
+                        populateTvFromRoom(data)
                     }
-                })
-
-                detailMovieViewModel.getDetailTv().observe(this, { movie ->
-                    title = movie.title
-                    image = movie.posterPath
-                    oldDate = movie.releaseDate
-                    rating = movie.voteAverage
-                    plot = movie.overview
-                    genres = movie.genres.toString()
-                    seasons = movie.numberOfSeasons.toString()
-                    episodes = movie.numberOfEpisodes.toString()
-                    link = "tv/${movie.id}"
-
-                    populateDetail()
                 })
             }
         }
@@ -147,6 +129,98 @@ class DetailActivity : AppCompatActivity() {
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             statusBarColor = Color.TRANSPARENT
+        }
+    }
+
+    private fun populateTvFromRoom(tv: DetailTvEntity) {
+        title = tv.title
+        image = tv.posterPath
+        oldDate = tv.releaseDate
+        rating = tv.voteAverage
+        plot = tv.overview
+        genres = tv.genres.toString()
+        seasons = tv.numberOfSeasons.toString()
+        episodes = tv.numberOfEpisodes.toString()
+        link = "tv/${tv.id}"
+
+        populateDetail()
+    }
+
+    private fun populateMovieFromRoom(movie: DetailMovieEntity) {
+        title = movie.title
+        image = movie.posterPath
+        oldDate = movie.releaseDate
+        rating = movie.voteAverage
+        plot = movie.overview
+        genres = movie.genres.toString()
+        link = "movie/${movie.id}"
+
+        populateDetail()
+    }
+
+    private fun populateTvFromApi() {
+        detailMovieViewModel.getDetailTv().observe(this, { tv ->
+            val snackbar =
+                Snackbar.make(linear_layout, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
+
+            snackbar.apply {
+                setAction("RETRY") { populateTvFromApi() }
+                setActionTextColor(ContextCompat.getColor(this@DetailActivity, R.color.colorRed))
+            }
+
+            if (tv != null) {
+                title = tv.title
+                image = tv.posterPath
+                oldDate = tv.releaseDate
+                rating = tv.voteAverage
+                plot = tv.overview
+                genres = tv.genres.toString()
+                seasons = tv.numberOfSeasons.toString()
+                episodes = tv.numberOfEpisodes.toString()
+                link = "tv/${tv.id}"
+                populateDetail()
+            } else {
+                snackbar.show()
+            }
+        })
+    }
+
+    private fun populateMovieFromApi() {
+        detailMovieViewModel.getDetailMovieFromApi().observe(this, { movie ->
+
+            val snackbar =
+                Snackbar.make(linear_layout, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
+
+            snackbar.apply {
+                setAction("RETRY") { populateMovieFromApi() }
+                setActionTextColor(ContextCompat.getColor(this@DetailActivity, R.color.colorRed))
+            }
+
+            if (movie == null) {
+                snackbar.show()
+            } else {
+                title = movie.title
+                image = movie.posterPath
+                oldDate = movie.releaseDate
+                rating = movie.voteAverage
+                plot = movie.overview
+                genres = movie.genres.toString()
+                link = "movie/${movie.id}"
+                populateDetail()
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
+
+    private fun startShimmer(state: Boolean) {
+        if (state) {
+            shimmer_detail_activity.visibility = View.VISIBLE
+            shimmer_detail_activity.startShimmer()
+            constraint_layout.visibility = View.GONE
+        } else {
+            shimmer_detail_activity.visibility = View.GONE
+            shimmer_detail_activity.stopShimmer()
+            constraint_layout.visibility = View.VISIBLE
         }
     }
 
@@ -199,6 +273,21 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun populateDetail() {
+        Glide.with(this)
+            .load("https://image.tmdb.org/t/p/original${image}")
+            .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 15)))
+            .into(object : CustomTarget<Drawable>() {
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
+                    linear_layout.background = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) = Unit
+            })
+
+        startShimmer(false)
 
         val oldDateFormat = "yyyy-MM-dd"
         val newDateFormat = "dd MMMM yyyy"
@@ -217,20 +306,6 @@ class DetailActivity : AppCompatActivity() {
         tv_genres.text = formatedGenres(genres)
         tv_title.text = title
         tv_plot.text = plot
-
-        Glide.with(this)
-            .load("https://image.tmdb.org/t/p/original${image}")
-            .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 15)))
-            .into(object : CustomTarget<Drawable>() {
-                override fun onResourceReady(
-                    resource: Drawable,
-                    transition: Transition<in Drawable>?
-                ) {
-                    constraint_layout.background = resource
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) = Unit
-            })
 
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/original${image}")

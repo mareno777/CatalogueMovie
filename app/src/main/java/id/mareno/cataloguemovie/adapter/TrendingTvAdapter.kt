@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.responses.TrendingTvResults
+import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
 import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
@@ -19,9 +19,9 @@ import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class TrendingTvAdapter : RecyclerView.Adapter<TrendingTvAdapter.TrendingTvViewHolder>() {
 
-    private val trendingTvShows = ArrayList<TrendingTvResults>()
+    private val trendingTvShows = ArrayList<TrendingTvsEntity>()
 
-    fun setData(movies: List<TrendingTvResults>?) {
+    fun setData(movies: List<TrendingTvsEntity>?) {
         if (movies == null) return
         trendingTvShows.clear()
         trendingTvShows.addAll(movies)
@@ -44,7 +44,7 @@ class TrendingTvAdapter : RecyclerView.Adapter<TrendingTvAdapter.TrendingTvViewH
 
 
     inner class TrendingTvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(tvShow: TrendingTvResults) {
+        fun bind(tvShow: TrendingTvsEntity) {
             with(itemView) {
                 tv_placeholder.text = tvShow.title
                 Glide.with(context)

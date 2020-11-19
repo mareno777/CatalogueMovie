@@ -12,7 +12,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -21,8 +21,8 @@ class MovieRepositoryTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val remote = Mockito.mock((RemoteDataSource::class.java))
-    private val movieRepository = FakeCatalogueRepository(remote)
+    private val remote = mock(RemoteDataSource::class.java)
+    private val fakeCatalogueRepository = FakeCatalogueRepository(remote)
 
     private val trendingMovieResponses = DataDummy.generateRemoteTrendingMovies()
     private val trendingTvResponses = DataDummy.generateRemoteTrendingTvs()
@@ -36,7 +36,8 @@ class MovieRepositoryTest {
                 .onAllMoviesReceived(trendingMovieResponses)
             null
         }.`when`(remote).getAllTrendingMovies(any())
-        val movieEntities = LiveDataTestUtil.getValue(movieRepository.getAllTrendingMovies())
+        val movieEntities =
+            LiveDataTestUtil.getValue(fakeCatalogueRepository.getAllTrendingMovies())
         verify(remote).getAllTrendingMovies(any())
         assertNotNull(movieEntities)
         assertEquals(trendingMovieResponses.size, movieEntities.size)
@@ -49,7 +50,7 @@ class MovieRepositoryTest {
                 .onAllMoviesReceived(trendingTvResponses)
             null
         }.`when`(remote).getAllTrendingTvs(any())
-        val movieEntities = LiveDataTestUtil.getValue(movieRepository.getAllTrendingTvs())
+        val movieEntities = LiveDataTestUtil.getValue(fakeCatalogueRepository.getAllTrendingTvs())
         verify(remote).getAllTrendingTvs(any())
         assertNotNull(movieEntities)
         assertEquals(trendingTvResponses.size, movieEntities.size)
@@ -62,7 +63,7 @@ class MovieRepositoryTest {
                 .onAllMoviesReceived(popularMovieResponses)
             null
         }.`when`(remote).getAllPopularMovies(any())
-        val movieEntities = LiveDataTestUtil.getValue(movieRepository.getAllPopularMovies())
+        val movieEntities = LiveDataTestUtil.getValue(fakeCatalogueRepository.getAllPopularMovies())
         verify(remote).getAllPopularMovies(any())
         assertNotNull(movieEntities)
         assertEquals(popularMovieResponses.size, movieEntities.size)
@@ -75,7 +76,7 @@ class MovieRepositoryTest {
                 .onAllMoviesReceived(popularTvResponses)
             null
         }.`when`(remote).getAllPopularTvs(any())
-        val movieEntities = LiveDataTestUtil.getValue(movieRepository.getAllPopularTvs())
+        val movieEntities = LiveDataTestUtil.getValue(fakeCatalogueRepository.getAllPopularTvs())
         verify(remote).getAllPopularTvs(any())
         assertNotNull(movieEntities)
         assertEquals(popularTvResponses.size, movieEntities.size)

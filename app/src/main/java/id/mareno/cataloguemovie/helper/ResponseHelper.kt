@@ -1,6 +1,5 @@
 package id.mareno.cataloguemovie.helper
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import id.mareno.cataloguemovie.helper.di.RetrofitBuilder
@@ -76,12 +75,13 @@ class ResponseHelper {
                 }
 
                 override fun onFailure(call: Call<TrendingTvModel>, t: Throwable) {
-                    Log.d("RETROFIT", t.message.toString())
+                    movieList.postValue(emptyList())
                 }
 
             })
         } catch (e: Exception) {
             e.printStackTrace()
+            movieList.postValue(emptyList())
         }
         return movieList
     }
@@ -106,12 +106,14 @@ class ResponseHelper {
                 }
 
                 override fun onFailure(call: Call<PopularMovieModel>, t: Throwable) {
-                    Log.d("RETROFIT", t.message.toString())
+                    movieList.postValue(emptyList())
                 }
             })
         } catch (e: Exception) {
             e.printStackTrace()
+            movieList.postValue(emptyList())
         }
+
         return movieList
     }
 
@@ -135,18 +137,18 @@ class ResponseHelper {
                 }
 
                 override fun onFailure(call: Call<PopularTvModel>, t: Throwable) {
-                    Log.d("RETROFIT", t.message.toString())
+                    movieList.postValue(emptyList())
                 }
             })
         } catch (e: Exception) {
-            e.printStackTrace()
+            movieList.postValue(emptyList())
         }
 
         return movieList
     }
 
-    fun loadDetailMovie(id: Int): LiveData<DetailMovieResults> {
-        val movieDetail = MutableLiveData<DetailMovieResults>()
+    fun loadDetailMovie(id: Int): LiveData<DetailMovieResults?> {
+        val movieDetail = MutableLiveData<DetailMovieResults?>()
         detailMovieApi =
             RetrofitBuilder.getApiClient().create(RetrofitInterfaces.DetailMovie::class.java)
         val movieDetailCall = detailMovieApi.getDetailMovie(id)
@@ -163,18 +165,19 @@ class ResponseHelper {
                 }
 
                 override fun onFailure(call: Call<DetailMovieResults>, t: Throwable) {
-
+                    movieDetail.postValue(null)
                 }
 
             })
         } catch (e: Exception) {
             e.printStackTrace()
+            movieDetail.postValue(null)
         }
         return movieDetail
     }
 
-    fun loadDetailTv(id: Int): LiveData<DetailTvResults> {
-        val tvDetail = MutableLiveData<DetailTvResults>()
+    fun loadDetailTv(id: Int): LiveData<DetailTvResults?> {
+        val tvDetail = MutableLiveData<DetailTvResults?>()
         detailTvApi =
             RetrofitBuilder.getApiClient().create(RetrofitInterfaces.DetailTv::class.java)
         val tvDetailCall = detailTvApi.getDetailTv(id)
@@ -191,13 +194,15 @@ class ResponseHelper {
                 }
 
                 override fun onFailure(call: Call<DetailTvResults>, t: Throwable) {
-
+                    tvDetail.postValue(null)
                 }
 
             })
         } catch (e: Exception) {
             e.printStackTrace()
+            tvDetail.postValue(null)
         }
         return tvDetail
+
     }
 }

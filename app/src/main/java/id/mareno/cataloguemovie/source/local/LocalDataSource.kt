@@ -1,8 +1,9 @@
 package id.mareno.cataloguemovie.source.local
 
 import androidx.lifecycle.LiveData
-import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
-import id.mareno.cataloguemovie.model.entities.DetailTvEntity
+import androidx.paging.DataSource
+import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
 
 class LocalDataSource private constructor(
     private val mMovieDao: MovieDao,
@@ -15,7 +16,8 @@ class LocalDataSource private constructor(
             INSTANCE ?: LocalDataSource(movieDao, tvDao)
     }
 
-    fun getBookmarkedMovies(): LiveData<List<DetailMovieEntity>> = mMovieDao.getAllBokmarkedMovie()
+    fun getBookmarkedMovies(): DataSource.Factory<Int, DetailMovieEntity> =
+        mMovieDao.getAllBokmarkedMovie()
 
     fun getMovieFromRoom(movieId: Int): LiveData<DetailMovieEntity> =
         mMovieDao.getMovieFromRoom(movieId)
@@ -24,7 +26,7 @@ class LocalDataSource private constructor(
 
     fun deleteMovie(movie: DetailMovieEntity) = mMovieDao.deleteMovie(movie)
 
-    fun getBookmarkedTvs(): LiveData<List<DetailTvEntity>> = mTvDao.getAllBokmarkedTvs()
+    fun getBookmarkedTvs(): DataSource.Factory<Int, DetailTvEntity> = mTvDao.getAllBokmarkedTvs()
 
     fun getTvFromRoom(tvId: Int): LiveData<DetailTvEntity> = mTvDao.getTvFromRoom(tvId)
 

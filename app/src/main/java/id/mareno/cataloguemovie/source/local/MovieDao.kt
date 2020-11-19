@@ -1,8 +1,9 @@
 package id.mareno.cataloguemovie.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
-import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
 
 @Dao
 interface MovieDao {
@@ -17,6 +18,6 @@ interface MovieDao {
     fun deleteMovie(movie: DetailMovieEntity)
 
     @Query("SELECT * FROM detail_movie")
-    fun getAllBokmarkedMovie(): LiveData<List<DetailMovieEntity>>
+    fun getAllBokmarkedMovie(): DataSource.Factory<Int, DetailMovieEntity>
 
 }

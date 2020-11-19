@@ -1,4 +1,4 @@
-package id.mareno.cataloguemovie.model.responses
+package id.mareno.cataloguemovie.model.entities.list
 
 
 import android.os.Parcelable
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TrendingTvResults(
+data class TrendingTvsEntity(
     var id: Int?,
 
     @SerializedName("name")

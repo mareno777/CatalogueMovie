@@ -10,16 +10,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.responses.PopularMovieResults
+import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
 import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class PopularMoviesAdapter : RecyclerView.Adapter<PopularMoviesAdapter.PopularMoviesViewHolder>() {
-    private val popularMovies = ArrayList<PopularMovieResults>()
+    private val popularMovies = ArrayList<PopularMoviesEntity>()
 
-    fun setData(movies: List<PopularMovieResults>?) {
+    fun setData(movies: List<PopularMoviesEntity>?) {
         if (movies == null) return
         popularMovies.clear()
         popularMovies.addAll(movies)
@@ -45,7 +45,7 @@ class PopularMoviesAdapter : RecyclerView.Adapter<PopularMoviesAdapter.PopularMo
     override fun getItemCount(): Int = popularMovies.size
 
     inner class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movie: PopularMovieResults) {
+        fun bind(movie: PopularMoviesEntity) {
             with(itemView) {
                 tv_placeholder.text = movie.title
 

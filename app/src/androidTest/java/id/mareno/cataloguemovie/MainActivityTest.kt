@@ -26,7 +26,6 @@ class MainActivityTest {
     private val popularMovies = DataDummy.generateRemotePopularMovies()
     private val popularTvShows = DataDummy.generateRemotePopularTvs()
 
-
     @get:Rule
     var activityRule = ActivityTestRule(MainActivity::class.java)
 

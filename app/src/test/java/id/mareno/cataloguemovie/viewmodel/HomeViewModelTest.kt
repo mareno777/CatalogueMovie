@@ -4,11 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
-import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
-import id.mareno.cataloguemovie.model.responses.PopularMovieResults
-import id.mareno.cataloguemovie.model.responses.PopularTvResults
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
-import id.mareno.cataloguemovie.model.responses.TrendingTvResults
+import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
+import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
+import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
 import id.mareno.cataloguemovie.source.CatalogueRepository
 import id.mareno.cataloguemovie.utils.DataDummy
 import org.junit.Assert.assertEquals
@@ -33,7 +32,7 @@ class HomeViewModelTest {
     private lateinit var movieRepository: CatalogueRepository
 
     @Mock
-    private lateinit var observer: Observer<List<TrendingMovieResults>>
+    private lateinit var observer: Observer<List<TrendingMoviesEntity>>
 
     @Before
     fun setUp() {
@@ -42,15 +41,15 @@ class HomeViewModelTest {
 
     @Test
     fun getTrendingMovies() {
-        val dummyMovies = DataDummy.generateRemoteTrendingMovies()
+        val dummyMovies = DataDummy.generateTrendingMovies()
         val movies = MutableLiveData<List<TrendingMoviesEntity>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllTrendingMovies()).thenReturn(movies)
-        val trendingTvEntities = homeViewModel.getTrendingMovies().value
+        val trendingMoviesEntities = homeViewModel.getTrendingMovies().value
         verify(movieRepository).getAllTrendingMovies()
-        assertNotNull(trendingTvEntities)
-        assertEquals(dummyMovies.size, trendingTvEntities?.size)
+        assertNotNull(trendingMoviesEntities)
+        assertEquals(dummyMovies.size, trendingMoviesEntities?.size)
 
         homeViewModel.getTrendingMovies().observeForever(observer)
         verify(observer).onChanged(dummyMovies)
@@ -58,8 +57,8 @@ class HomeViewModelTest {
 
     @Test
     fun getTrendingTvShows() {
-        val dummyMovies = DataDummy.generateRemoteTrendingTvs()
-        val movies = MutableLiveData<List<TrendingTvResults>>()
+        val dummyMovies = DataDummy.generateTrendingTvs()
+        val movies = MutableLiveData<List<TrendingTvsEntity>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllTrendingTvs()).thenReturn(movies)
@@ -71,8 +70,8 @@ class HomeViewModelTest {
 
     @Test
     fun getPopularMovies() {
-        val dummyMovies = DataDummy.generateRemotePopularMovies()
-        val movies = MutableLiveData<List<PopularMovieResults>>()
+        val dummyMovies = DataDummy.generatePopularMovies()
+        val movies = MutableLiveData<List<PopularMoviesEntity>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllPopularMovies()).thenReturn(movies)
@@ -84,8 +83,8 @@ class HomeViewModelTest {
 
     @Test
     fun getPopularTvShows() {
-        val dummyMovies = DataDummy.generateRemotePopularTvs()
-        val movies = MutableLiveData<List<PopularTvResults>>()
+        val dummyMovies = DataDummy.generatePopularTvs()
+        val movies = MutableLiveData<List<PopularTvsEntity>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllPopularTvs()).thenReturn(movies)

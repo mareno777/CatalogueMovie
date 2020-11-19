@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.TrendingMoviesEntity
+import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
 import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE

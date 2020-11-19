@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import id.mareno.cataloguemovie.model.entities.DetailMovieEntity
-import id.mareno.cataloguemovie.model.entities.DetailTvEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
 
 @Database(
     entities = [DetailMovieEntity::class, DetailTvEntity::class],

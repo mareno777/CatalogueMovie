@@ -63,22 +63,22 @@ class RemoteDataSource private constructor(
     }
 
     interface LoadTrendingTvsCallback {
-        fun onAllMoviesReceived(movieResponses: List<TrendingTvResults>?)
+        fun onAllMoviesReceived(movieResponses: List<TrendingTvResults>)
     }
 
     interface LoadPopularMoviesCallback {
-        fun onAllMoviesReceived(movieResponses: List<PopularMovieResults>?)
+        fun onAllMoviesReceived(movieResponses: List<PopularMovieResults>)
     }
 
     interface LoadPopularTvsCallback {
-        fun onAllMoviesReceived(movieResponses: List<PopularTvResults>?)
+        fun onAllMoviesReceived(movieResponses: List<PopularTvResults>)
     }
 
     interface LoadDetailMovie {
-        fun onDetailMovieReceived(detailMovieResponses: DetailMovieResults)
+        fun onDetailMovieReceived(detailMovieResponses: DetailMovieResults?)
     }
 
     interface LoadDetailTv {
-        fun onDetailTvReceived(detailTvResponses: DetailTvResults)
+        fun onDetailTvReceived(detailTvResponses: DetailTvResults?)
     }
 }

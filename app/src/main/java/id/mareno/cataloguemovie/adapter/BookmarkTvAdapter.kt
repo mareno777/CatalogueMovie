@@ -5,22 +5,37 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.DetailTvEntity
+import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
 import id.mareno.cataloguemovie.ui.activity.DetailActivity
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
-class BookmarkTvAdapter : RecyclerView.Adapter<BookmarkTvAdapter.BookmarkTvViewHolder>() {
-    private val movieList = ArrayList<DetailTvEntity>()
+class BookmarkTvAdapter internal constructor() :
+    PagedListAdapter<DetailTvEntity, BookmarkTvAdapter.BookmarkTvViewHolder>(DIFF_CALLBACK) {
 
-    fun setData(movies: List<DetailTvEntity>) {
-        movieList.clear()
-        movieList.addAll(movies)
-        notifyDataSetChanged()
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DetailTvEntity>() {
+            override fun areItemsTheSame(
+                oldItem: DetailTvEntity,
+                newItem: DetailTvEntity
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: DetailTvEntity,
+                newItem: DetailTvEntity
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkTvViewHolder {
@@ -30,10 +45,9 @@ class BookmarkTvAdapter : RecyclerView.Adapter<BookmarkTvAdapter.BookmarkTvViewH
     }
 
     override fun onBindViewHolder(holder: BookmarkTvViewHolder, position: Int) {
-        holder.bind(movieList[position])
+        val movie = getItem(position)
+        if (movie != null) holder.bind(movie)
     }
-
-    override fun getItemCount(): Int = movieList.size
 
     inner class BookmarkTvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: DetailTvEntity) {

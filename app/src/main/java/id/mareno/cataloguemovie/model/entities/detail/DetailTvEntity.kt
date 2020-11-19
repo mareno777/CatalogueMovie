@@ -1,4 +1,4 @@
-package id.mareno.cataloguemovie.model.entities
+package id.mareno.cataloguemovie.model.entities.detail
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
