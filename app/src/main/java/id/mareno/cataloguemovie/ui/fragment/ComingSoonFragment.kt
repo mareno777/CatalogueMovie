@@ -50,11 +50,9 @@ class ComingSoonFragment : Fragment() {
                 factory
             )[ComingSoonViewModel::class.java]
 
-            comingSoonViewModel.getMovieResults().observe(viewLifecycleOwner, { results ->
+            comingSoonViewModel.getComingSoonMovies().observe(viewLifecycleOwner, { results ->
                 comingSoonAdapter.setData(results)
             })
-
-            comingSoonViewModel.getMovie()
         }
     }
 }

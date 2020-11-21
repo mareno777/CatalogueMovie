@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import id.mareno.cataloguemovie.helper.di.RetrofitBuilder
 import id.mareno.cataloguemovie.helper.di.RetrofitInterfaces
-import id.mareno.cataloguemovie.model.json.PopularMovieModel
-import id.mareno.cataloguemovie.model.json.PopularTvModel
-import id.mareno.cataloguemovie.model.json.TrendingMovieModel
-import id.mareno.cataloguemovie.model.json.TrendingTvModel
+import id.mareno.cataloguemovie.model.json.*
 import id.mareno.cataloguemovie.model.responses.*
 import id.mareno.cataloguemovie.utils.EspressoIdlingResource
 import retrofit2.Call
@@ -22,6 +19,7 @@ class ResponseHelper {
     private lateinit var popularTvApi: RetrofitInterfaces.PopularTvApi
     private lateinit var detailMovieApi: RetrofitInterfaces.DetailMovie
     private lateinit var detailTvApi: RetrofitInterfaces.DetailTv
+    private lateinit var comingSoonApi: RetrofitInterfaces.ComingSoonApi
 
     fun loadTrendingMovies(): LiveData<List<TrendingMovieResults>> {
         EspressoIdlingResource.increment()
@@ -147,7 +145,39 @@ class ResponseHelper {
         return movieList
     }
 
+    fun loadComingSoon(): LiveData<List<ComingSoonMovieResults>> {
+        val movieResults = MutableLiveData<List<ComingSoonMovieResults>>()
+        comingSoonApi =
+            RetrofitBuilder.getApiClient().create(RetrofitInterfaces.ComingSoonApi::class.java)
+        val trendingCall = comingSoonApi.getComingSoonMovies()
+        try {
+
+            trendingCall.enqueue(object : Callback<ComingSoonModel> {
+                override fun onResponse(
+                    call: Call<ComingSoonModel>,
+                    response: Response<ComingSoonModel>
+                ) {
+                    val jsonResponse = response.body()
+                    if (jsonResponse != null) {
+                        val movie = jsonResponse.results
+                        movieResults.postValue(movie)
+                    }
+                }
+
+                override fun onFailure(call: Call<ComingSoonModel>, t: Throwable) {
+                    movieResults.postValue(emptyList())
+                }
+            })
+
+
+        } catch (e: Exception) {
+            movieResults.postValue(emptyList())
+        }
+        return movieResults
+    }
+
     fun loadDetailMovie(id: Int): LiveData<DetailMovieResults?> {
+        EspressoIdlingResource.increment()
         val movieDetail = MutableLiveData<DetailMovieResults?>()
         detailMovieApi =
             RetrofitBuilder.getApiClient().create(RetrofitInterfaces.DetailMovie::class.java)
@@ -161,6 +191,7 @@ class ResponseHelper {
                     val jsonResponse = response.body()
                     if (jsonResponse != null) {
                         movieDetail.postValue(jsonResponse)
+                        EspressoIdlingResource.decrement()
                     }
                 }
 
@@ -177,6 +208,7 @@ class ResponseHelper {
     }
 
     fun loadDetailTv(id: Int): LiveData<DetailTvResults?> {
+        EspressoIdlingResource.increment()
         val tvDetail = MutableLiveData<DetailTvResults?>()
         detailTvApi =
             RetrofitBuilder.getApiClient().create(RetrofitInterfaces.DetailTv::class.java)
@@ -190,6 +222,7 @@ class ResponseHelper {
                     val jsonResponse = response.body()
                     if (jsonResponse != null) {
                         tvDetail.postValue(jsonResponse)
+                        EspressoIdlingResource.decrement()
                     }
                 }
 

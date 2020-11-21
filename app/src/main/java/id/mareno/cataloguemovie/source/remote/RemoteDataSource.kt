@@ -46,6 +46,12 @@ class RemoteDataSource private constructor(
         })
     }
 
+    fun getComingSoon(callback: LoadComingSoon) {
+        responseHelper.loadComingSoon().observe(lifecycleOwner, { movie ->
+            callback.onAllMoviesReceived(movie)
+        })
+    }
+
     fun getDetailMovie(id: Int, callback: LoadDetailMovie) {
         responseHelper.loadDetailMovie(id).observe(lifecycleOwner, { detail ->
             callback.onDetailMovieReceived(detail)
@@ -80,5 +86,9 @@ class RemoteDataSource private constructor(
 
     interface LoadDetailTv {
         fun onDetailTvReceived(detailTvResponses: DetailTvResults?)
+    }
+
+    interface LoadComingSoon {
+        fun onAllMoviesReceived(movieResponses: List<ComingSoonMovieResults>)
     }
 }

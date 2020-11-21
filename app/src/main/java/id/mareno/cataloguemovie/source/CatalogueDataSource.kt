@@ -8,6 +8,7 @@ import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
+import id.mareno.cataloguemovie.model.responses.ComingSoonMovieResults
 
 interface CatalogueDataSource {
 
@@ -22,6 +23,8 @@ interface CatalogueDataSource {
     fun getDetailMovie(id: Int): LiveData<DetailMovieEntity?>
 
     fun getDetailTv(id: Int): LiveData<DetailTvEntity?>
+
+    fun getComingSoon(): LiveData<List<ComingSoonMovieResults>>
 
     fun getBookmarkedMovies(): LiveData<PagedList<DetailMovieEntity>>
 

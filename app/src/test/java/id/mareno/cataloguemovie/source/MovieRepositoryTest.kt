@@ -28,6 +28,7 @@ class MovieRepositoryTest {
     private val trendingTvResponses = DataDummy.generateRemoteTrendingTvs()
     private val popularMovieResponses = DataDummy.generateRemotePopularMovies()
     private val popularTvResponses = DataDummy.generateRemotePopularTvs()
+    private val comingSoonResponses = DataDummy.generateComingSoon()
 
     @Test
     fun getAllTrendingMovies() {
@@ -80,5 +81,18 @@ class MovieRepositoryTest {
         verify(remote).getAllPopularTvs(any())
         assertNotNull(movieEntities)
         assertEquals(popularTvResponses.size, movieEntities.size)
+    }
+
+    @Test
+    fun getComingSoon() {
+        doAnswer { invocation ->
+            (invocation.arguments[0] as RemoteDataSource.LoadComingSoon)
+                .onAllMoviesReceived(comingSoonResponses)
+            null
+        }.`when`(remote).getComingSoon(any())
+        val movieEntities = LiveDataTestUtil.getValue(fakeCatalogueRepository.getComingSoon())
+        verify(remote).getComingSoon(any())
+        assertNotNull(movieEntities)
+        assertEquals(comingSoonResponses.size, movieEntities.size)
     }
 }

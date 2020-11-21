@@ -29,14 +29,14 @@ class HomeViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var movieRepository: CatalogueRepository
+    private lateinit var catalogueRepository: CatalogueRepository
 
     @Mock
     private lateinit var observer: Observer<List<TrendingMoviesEntity>>
 
     @Before
     fun setUp() {
-        homeViewModel = HomeViewModel(movieRepository)
+        homeViewModel = HomeViewModel(catalogueRepository)
     }
 
     @Test
@@ -45,9 +45,9 @@ class HomeViewModelTest {
         val movies = MutableLiveData<List<TrendingMoviesEntity>>()
         movies.value = dummyMovies
 
-        `when`(movieRepository.getAllTrendingMovies()).thenReturn(movies)
+        `when`(catalogueRepository.getAllTrendingMovies()).thenReturn(movies)
         val trendingMoviesEntities = homeViewModel.getTrendingMovies().value
-        verify(movieRepository).getAllTrendingMovies()
+        verify(catalogueRepository).getAllTrendingMovies()
         assertNotNull(trendingMoviesEntities)
         assertEquals(dummyMovies.size, trendingMoviesEntities?.size)
 
@@ -61,9 +61,9 @@ class HomeViewModelTest {
         val movies = MutableLiveData<List<TrendingTvsEntity>>()
         movies.value = dummyMovies
 
-        `when`(movieRepository.getAllTrendingTvs()).thenReturn(movies)
+        `when`(catalogueRepository.getAllTrendingTvs()).thenReturn(movies)
         val trendingTvEntities = homeViewModel.getTrendingTvs().value
-        verify(movieRepository).getAllTrendingTvs()
+        verify(catalogueRepository).getAllTrendingTvs()
         assertNotNull(trendingTvEntities)
         assertEquals(dummyMovies.size, trendingTvEntities?.size)
     }
@@ -74,9 +74,9 @@ class HomeViewModelTest {
         val movies = MutableLiveData<List<PopularMoviesEntity>>()
         movies.value = dummyMovies
 
-        `when`(movieRepository.getAllPopularMovies()).thenReturn(movies)
+        `when`(catalogueRepository.getAllPopularMovies()).thenReturn(movies)
         val popularMoviesEntities = homeViewModel.getPopularMovies().value
-        verify(movieRepository).getAllPopularMovies()
+        verify(catalogueRepository).getAllPopularMovies()
         assertNotNull(popularMoviesEntities)
         assertEquals(dummyMovies.size, popularMoviesEntities?.size)
     }
@@ -87,9 +87,9 @@ class HomeViewModelTest {
         val movies = MutableLiveData<List<PopularTvsEntity>>()
         movies.value = dummyMovies
 
-        `when`(movieRepository.getAllPopularTvs()).thenReturn(movies)
+        `when`(catalogueRepository.getAllPopularTvs()).thenReturn(movies)
         val popularTvEntities = homeViewModel.getPopularTvs().value
-        verify(movieRepository).getAllPopularTvs()
+        verify(catalogueRepository).getAllPopularTvs()
         assertNotNull(popularTvEntities)
         assertEquals(dummyMovies.size, popularTvEntities?.size)
     }

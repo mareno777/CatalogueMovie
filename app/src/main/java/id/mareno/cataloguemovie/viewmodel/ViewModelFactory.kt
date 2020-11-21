@@ -12,11 +12,11 @@ class ViewModelFactory private constructor(private val catalogueRepository: Cata
 
     companion object {
         @Volatile
-        private var instance: ViewModelFactory? = null
+        private var INSTANCE: ViewModelFactory? = null
 
         fun getInstance(viewLifecycleOwner: LifecycleOwner, context: Context): ViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ViewModelFactory(
                     Repository.provideRepository(
                         viewLifecycleOwner, context
                     )
@@ -37,7 +37,7 @@ class ViewModelFactory private constructor(private val catalogueRepository: Cata
                 FavoriteViewModel(catalogueRepository) as T
             }
             modelClass.isAssignableFrom(ComingSoonViewModel::class.java) -> {
-                ComingSoonViewModel() as T
+                ComingSoonViewModel(catalogueRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

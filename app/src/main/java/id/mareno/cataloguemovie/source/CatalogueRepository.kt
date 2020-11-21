@@ -169,6 +169,18 @@ class CatalogueRepository private constructor(
         return dataDetailTv
     }
 
+    override fun getComingSoon(): LiveData<List<ComingSoonMovieResults>> {
+        val movieResults = MutableLiveData<List<ComingSoonMovieResults>>()
+
+        remoteDataSource.getComingSoon(object : RemoteDataSource.LoadComingSoon {
+            override fun onAllMoviesReceived(movieResponses: List<ComingSoonMovieResults>) {
+                movieResults.postValue(movieResponses)
+            }
+
+        })
+        return movieResults
+    }
+
     override fun getBookmarkedMovies(): LiveData<PagedList<DetailMovieEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)

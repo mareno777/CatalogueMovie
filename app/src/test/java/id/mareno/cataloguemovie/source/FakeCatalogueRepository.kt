@@ -9,10 +9,7 @@ import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
-import id.mareno.cataloguemovie.model.responses.PopularMovieResults
-import id.mareno.cataloguemovie.model.responses.PopularTvResults
-import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
-import id.mareno.cataloguemovie.model.responses.TrendingTvResults
+import id.mareno.cataloguemovie.model.responses.*
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
 
 class FakeCatalogueRepository(
@@ -104,11 +101,43 @@ class FakeCatalogueRepository(
     }
 
     override fun getDetailMovie(id: Int): LiveData<DetailMovieEntity?> {
-        return MutableLiveData()
+        val dataDetailMovie = MutableLiveData<DetailMovieEntity?>()
+
+        remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovie {
+            override fun onDetailMovieReceived(detailMovieResponses: DetailMovieResults?) {
+                if (detailMovieResponses == null) {
+                    dataDetailMovie.postValue(null)
+                } else {
+                    val detail = DetailMovieEntity(
+                        detailMovieResponses.genres.toString(),
+                        detailMovieResponses.id,
+                        detailMovieResponses.overview,
+                        detailMovieResponses.posterPath,
+                        detailMovieResponses.releaseDate,
+                        detailMovieResponses.title,
+                        detailMovieResponses.voteAverage
+                    )
+                    dataDetailMovie.postValue(detail)
+                }
+            }
+        })
+        return dataDetailMovie
     }
 
     override fun getDetailTv(id: Int): LiveData<DetailTvEntity?> {
         return MutableLiveData()
+    }
+
+    override fun getComingSoon(): LiveData<List<ComingSoonMovieResults>> {
+        val movieResults = MutableLiveData<List<ComingSoonMovieResults>>()
+
+        remoteDataSource.getComingSoon(object : RemoteDataSource.LoadComingSoon {
+            override fun onAllMoviesReceived(movieResponses: List<ComingSoonMovieResults>) {
+                movieResults.postValue(movieResponses)
+            }
+
+        })
+        return movieResults
     }
 
     override fun getBookmarkedMovies(): LiveData<PagedList<DetailMovieEntity>> {
