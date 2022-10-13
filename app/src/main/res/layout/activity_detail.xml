@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".ui.activity.DetailActivity">
+    tools:context=".presentation.activity.DetailActivity">
 
     <ImageButton
         android:id="@+id/btn_back"

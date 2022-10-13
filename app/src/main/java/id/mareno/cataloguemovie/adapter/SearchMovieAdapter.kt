@@ -12,9 +12,9 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.model.responses.SearchMovieResults
-import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class SearchMovieAdapter : RecyclerView.Adapter<SearchMovieAdapter.SearchMovieHolder>() {

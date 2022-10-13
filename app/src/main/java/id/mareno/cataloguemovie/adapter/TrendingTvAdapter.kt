@@ -5,27 +5,20 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
+import id.mareno.cataloguemovie.data.remote.dtos.PosterResult
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
-
-class TrendingTvAdapter : RecyclerView.Adapter<TrendingTvAdapter.TrendingTvViewHolder>() {
-
-    private val trendingTvShows = ArrayList<TrendingTvsEntity>()
-
-    fun setData(movies: List<TrendingTvsEntity>?) {
-        if (movies == null) return
-        trendingTvShows.clear()
-        trendingTvShows.addAll(movies)
-    }
+class TrendingTvAdapter :
+    ListAdapter<PosterResult, TrendingTvAdapter.TrendingTvViewHolder>(DifferentUtil()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,14 +30,11 @@ class TrendingTvAdapter : RecyclerView.Adapter<TrendingTvAdapter.TrendingTvViewH
     }
 
     override fun onBindViewHolder(holder: TrendingTvAdapter.TrendingTvViewHolder, position: Int) {
-        holder.bind(trendingTvShows[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = trendingTvShows.size
-
-
     inner class TrendingTvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(tvShow: TrendingTvsEntity) {
+        fun bind(tvShow: PosterResult) {
             with(itemView) {
                 tv_placeholder.text = tvShow.title
                 Glide.with(context)

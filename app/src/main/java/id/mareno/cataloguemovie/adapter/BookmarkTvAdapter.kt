@@ -5,19 +5,19 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity
+import id.mareno.cataloguemovie.data.local.entities.detail.DetailTvEntity
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class BookmarkTvAdapter internal constructor() :
-    PagedListAdapter<DetailTvEntity, BookmarkTvAdapter.BookmarkTvViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<DetailTvEntity, BookmarkTvAdapter.BookmarkTvViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DetailTvEntity>() {
@@ -45,8 +45,7 @@ class BookmarkTvAdapter internal constructor() :
     }
 
     override fun onBindViewHolder(holder: BookmarkTvViewHolder, position: Int) {
-        val movie = getItem(position)
-        if (movie != null) holder.bind(movie)
+        holder.bind(getItem(position))
     }
 
     inner class BookmarkTvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

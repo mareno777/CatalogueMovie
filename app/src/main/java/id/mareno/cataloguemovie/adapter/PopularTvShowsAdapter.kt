@@ -5,27 +5,20 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
+import id.mareno.cataloguemovie.data.remote.dtos.PosterResult
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
 class PopularTvShowsAdapter :
-    RecyclerView.Adapter<PopularTvShowsAdapter.PopularTvShowsViewHolder>() {
-    private val popularTvShows = ArrayList<PopularTvsEntity>()
-
-    fun setData(tvShow: List<PopularTvsEntity>?) {
-        if (tvShow == null) return
-        popularTvShows.clear()
-        popularTvShows.addAll(tvShow)
-        notifyDataSetChanged()
-    }
+    ListAdapter<PosterResult, PopularTvShowsAdapter.PopularTvShowsViewHolder>(DifferentUtil()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -40,13 +33,11 @@ class PopularTvShowsAdapter :
         holder: PopularTvShowsViewHolder,
         position: Int
     ) {
-        holder.bind(popularTvShows[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = popularTvShows.size
-
     inner class PopularTvShowsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(tvShow: PopularTvsEntity) {
+        fun bind(tvShow: PosterResult) {
             with(itemView) {
                 tv_placeholder.text = tvShow.title
                 Glide.with(context)

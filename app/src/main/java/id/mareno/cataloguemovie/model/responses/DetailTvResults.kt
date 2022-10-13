@@ -2,7 +2,7 @@ package id.mareno.cataloguemovie.model.responses
 
 
 import com.google.gson.annotations.SerializedName
-import id.mareno.cataloguemovie.model.json.Genre
+import id.mareno.cataloguemovie.data.remote.dtos.Genre
 
 data class DetailTvResults(
     @SerializedName("first_air_date")

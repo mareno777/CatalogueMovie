@@ -3,12 +3,15 @@ package id.mareno.cataloguemovie.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
-import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
-import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
-import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
-import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
-import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
-import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
+import id.mareno.cataloguemovie.data.local.entities.detail.DetailMovieEntity
+import id.mareno.cataloguemovie.data.local.entities.detail.DetailTvEntity
+import id.mareno.cataloguemovie.data.local.entities.list.PopularMoviesEntity
+import id.mareno.cataloguemovie.data.local.entities.list.PopularTvsEntity
+import id.mareno.cataloguemovie.data.local.entities.list.TrendingMoviesEntity
+import id.mareno.cataloguemovie.data.local.entities.list.TrendingTvsEntity
+import id.mareno.cataloguemovie.data.remote.dtos.ComingSoonMovieResults
+import id.mareno.cataloguemovie.data.remote.dtos.PosterResult
+import id.mareno.cataloguemovie.domain.CatalogueRepository
 import id.mareno.cataloguemovie.model.responses.*
 import id.mareno.cataloguemovie.source.remote.RemoteDataSource
 
@@ -61,7 +64,7 @@ class FakeCatalogueRepository(
         val movieResults = MutableLiveData<List<PopularMoviesEntity>>()
 
         remoteDataSource.getAllPopularMovies(object : RemoteDataSource.LoadPopularMoviesCallback {
-            override fun onAllMoviesReceived(movieResponses: List<PopularMovieResults>) {
+            override fun onAllMoviesReceived(movieResponses: List<PosterResult>) {
                 val movieList = ArrayList<PopularMoviesEntity>()
                 for (response in movieResponses) {
                     val movie = PopularMoviesEntity(
@@ -148,7 +151,7 @@ class FakeCatalogueRepository(
 
     override fun deleteBookmarkMovie(movie: DetailMovieEntity) = Unit
 
-    override fun getMovieOnRoom(movieId: Int): LiveData<DetailMovieEntity> {
+    override fun getDetailMovieFromRoom(movieId: Int): LiveData<DetailMovieEntity> {
         return MutableLiveData()
     }
 
@@ -164,7 +167,7 @@ class FakeCatalogueRepository(
         TODO("Not yet implemented")
     }
 
-    override fun getTvOnRoom(tvId: Int): LiveData<DetailTvEntity> {
+    override fun getDetailTvFromRoom(tvId: Int): LiveData<DetailTvEntity> {
         return MutableLiveData()
     }
 }

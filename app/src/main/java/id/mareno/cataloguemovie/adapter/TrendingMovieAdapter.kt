@@ -5,25 +5,20 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
+import id.mareno.cataloguemovie.data.remote.dtos.PosterResult
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
-class TrendingMovieAdapter : RecyclerView.Adapter<TrendingMovieAdapter.TrendingViewHolder>() {
-    private val listMovies = ArrayList<TrendingMoviesEntity>()
-
-    fun setData(movies: List<TrendingMoviesEntity>) {
-        listMovies.clear()
-        listMovies.addAll(movies)
-        notifyDataSetChanged()
-    }
+class TrendingMovieAdapter :
+    ListAdapter<PosterResult, TrendingMovieAdapter.TrendingViewHolder>(DifferentUtil()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -35,16 +30,13 @@ class TrendingMovieAdapter : RecyclerView.Adapter<TrendingMovieAdapter.TrendingV
     }
 
     override fun onBindViewHolder(holder: TrendingMovieAdapter.TrendingViewHolder, position: Int) {
-        val movie = listMovies[position]
-        holder.bind(movie)
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount() = listMovies.size
-
     inner class TrendingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movie: TrendingMoviesEntity) {
+        fun bind(movie: PosterResult) {
             with(itemView) {
-                Glide.with(context)
+                Glide.with(itemView)
                     .load("https://image.tmdb.org/t/p/original${movie.posterPath}")
                     .into(object : CustomTarget<Drawable>() {
                         override fun onResourceReady(

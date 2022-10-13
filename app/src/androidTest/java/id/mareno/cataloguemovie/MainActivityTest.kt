@@ -10,7 +10,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.rule.ActivityTestRule
-import id.mareno.cataloguemovie.ui.activity.MainActivity
+import id.mareno.cataloguemovie.presentation.activity.MainActivity
 import id.mareno.cataloguemovie.utils.DataDummy
 import id.mareno.cataloguemovie.utils.EspressoIdlingResource
 import org.junit.After

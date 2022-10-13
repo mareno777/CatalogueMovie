@@ -1,17 +1,15 @@
 package id.mareno.cataloguemovie.adapter
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ShareCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.responses.ComingSoonMovieResults
+import id.mareno.cataloguemovie.data.remote.dtos.ComingSoonMovieResults
 import kotlinx.android.synthetic.main.coming_soon_list.view.*
 
-class ComingSoonAdapter(private val activity: Activity) :
+class ComingSoonAdapter(val onShare: (String) -> Unit) :
     RecyclerView.Adapter<ComingSoonAdapter.ComingSoonViewHolder>() {
     private val movieList = ArrayList<ComingSoonMovieResults>()
 
@@ -48,13 +46,7 @@ class ComingSoonAdapter(private val activity: Activity) :
                 tv_genres.text = formatedGenres(movie.genreIds.toString())
 
                 btn_share.setOnClickListener {
-                    val mimeType = "text/plain"
-                    ShareCompat.IntentBuilder.from(activity).apply {
-                        setType(mimeType)
-                        setChooserTitle("Bagikan film ini sekarang.")
-                        setText("https://www.themoviedb.org/movie/${movie.id}")
-                        startChooser()
-                    }
+                    onShare("https://www.themoviedb.org/movie/${movie.id}")
                 }
             }
         }

@@ -5,26 +5,20 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import id.mareno.cataloguemovie.R
-import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_ID
-import id.mareno.cataloguemovie.ui.activity.DetailActivity.Companion.EXTRA_TYPE
+import id.mareno.cataloguemovie.data.remote.dtos.PosterResult
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_ID
+import id.mareno.cataloguemovie.presentation.activity.DetailActivity.Companion.EXTRA_TYPE
 import kotlinx.android.synthetic.main.movie_list_card.view.*
 
-class PopularMoviesAdapter : RecyclerView.Adapter<PopularMoviesAdapter.PopularMoviesViewHolder>() {
-    private val popularMovies = ArrayList<PopularMoviesEntity>()
-
-    fun setData(movies: List<PopularMoviesEntity>?) {
-        if (movies == null) return
-        popularMovies.clear()
-        popularMovies.addAll(movies)
-        notifyDataSetChanged()
-    }
+class PopularMoviesAdapter :
+    ListAdapter<PosterResult, PopularMoviesAdapter.PopularMoviesViewHolder>(DifferentUtil()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -39,13 +33,11 @@ class PopularMoviesAdapter : RecyclerView.Adapter<PopularMoviesAdapter.PopularMo
         holder: PopularMoviesAdapter.PopularMoviesViewHolder,
         position: Int
     ) {
-        holder.bind(popularMovies[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = popularMovies.size
-
     inner class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movie: PopularMoviesEntity) {
+        fun bind(movie: PosterResult) {
             with(itemView) {
                 tv_placeholder.text = movie.title
 
