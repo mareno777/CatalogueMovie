@@ -20,18 +20,6 @@
             app:menu="@menu/search_menu"
             app:title="@string/search_movie"
             app:titleTextColor="@color/textColor" />
-
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/search_movie"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/inActive"
-            app:searchBackIcon="@drawable/ic_arrow_back"
-            app:searchBackground="@color/notBlack"
-            app:searchCloseIcon="@drawable/ic_close" />
     </FrameLayout>
 
     <FrameLayout

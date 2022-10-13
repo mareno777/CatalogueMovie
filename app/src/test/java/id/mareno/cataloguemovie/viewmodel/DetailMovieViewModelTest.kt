@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
 import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
 import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
-import id.mareno.cataloguemovie.source.CatalogueRepository
+import id.mareno.cataloguemovie.source.CatalogueRepositoryImpl
 import id.mareno.cataloguemovie.utils.DataDummy
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
@@ -27,7 +27,7 @@ class DetailMovieViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var catalogueRepository: CatalogueRepository
+    private lateinit var catalogueRepository: CatalogueRepositoryImpl
 
     @Mock
     private lateinit var movieObserver: Observer<DetailMovieEntity?>

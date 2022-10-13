@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         if (activity != null) {
 
-            val factory = ViewModelFactory.getInstance(viewLifecycleOwner, requireContext())
+            val factory = ViewModelFactory.getInstance(requireContext())
             homeViewModel = ViewModelProvider(requireActivity(), factory)[HomeViewModel::class.java]
 
             populateTrendingMovieNow()
@@ -85,42 +85,42 @@ class HomeFragment : Fragment() {
     private fun populateTrendingMovieNow() {
         startTrendingMovieShimmer(true)
 
-        homeViewModel.getTrendingMovies().observe(viewLifecycleOwner, { movies ->
+        homeViewModel.getTrendingMovies().observe(viewLifecycleOwner) { movies ->
             if (movies.isEmpty()) return@observe
             startTrendingMovieShimmer(false)
             trendingMovieAdapter.setData(movies)
-        })
+        }
 
     }
 
     private fun populateTrendingTvNow() {
         startTrendingTvShimmer(true)
 
-        homeViewModel.getTrendingTvs().observe(viewLifecycleOwner, { movies ->
+        homeViewModel.getTrendingTvs().observe(viewLifecycleOwner) { movies ->
             if (movies.isEmpty()) return@observe
 
             startTrendingTvShimmer(false)
             trendingTvAdapter.setData(movies)
-        })
+        }
     }
 
     private fun populatePopularMovies() {
 
         startPopularMovieShimmer(true)
 
-        homeViewModel.getPopularMovies().observe(viewLifecycleOwner, { movies ->
+        homeViewModel.getPopularMovies().observe(viewLifecycleOwner) { movies ->
 
             if (movies.isEmpty()) return@observe
 
             startPopularMovieShimmer(false)
             popularMoviesAdapter.setData(movies)
-        })
+        }
     }
 
     private fun populatePopularTv() {
         startPopularTvShimmer(true)
 
-        homeViewModel.getPopularTvs().observe(viewLifecycleOwner, { movies ->
+        homeViewModel.getPopularTvs().observe(viewLifecycleOwner) { movies ->
             val snackbar =
                 Snackbar.make(
                     tv_most_popular,
@@ -143,7 +143,7 @@ class HomeFragment : Fragment() {
             }
             startPopularTvShimmer(false)
             popularTvShowsAdapter.setData(movies)
-        })
+        }
     }
 
     private fun startTrendingMovieShimmer(state: Boolean) {

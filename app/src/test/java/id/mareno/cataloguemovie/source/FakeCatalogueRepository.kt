@@ -15,7 +15,7 @@ import id.mareno.cataloguemovie.source.remote.RemoteDataSource
 class FakeCatalogueRepository(
     private val remoteDataSource: RemoteDataSource
 ) :
-    CatalogueDataSource {
+    CatalogueRepository {
 
     override fun getAllTrendingMovies(): LiveData<List<TrendingMoviesEntity>> {
         val movieResults = MutableLiveData<List<TrendingMoviesEntity>>()

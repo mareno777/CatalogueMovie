@@ -44,15 +44,15 @@ class ComingSoonFragment : Fragment() {
         if (activity != null) {
 
 
-            val factory = ViewModelFactory.getInstance(viewLifecycleOwner, requireContext())
+            val factory = ViewModelFactory.getInstance(requireContext())
             comingSoonViewModel = ViewModelProvider(
                 requireActivity(),
                 factory
             )[ComingSoonViewModel::class.java]
 
-            comingSoonViewModel.getComingSoonMovies().observe(viewLifecycleOwner, { results ->
+            comingSoonViewModel.getComingSoonMovies().observe(viewLifecycleOwner) { results ->
                 comingSoonAdapter.setData(results)
-            })
+            }
         }
     }
 }

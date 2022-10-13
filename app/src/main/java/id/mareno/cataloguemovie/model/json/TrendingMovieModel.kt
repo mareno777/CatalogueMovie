@@ -6,7 +6,7 @@ import id.mareno.cataloguemovie.model.responses.TrendingMovieResults
 
 data class TrendingMovieModel(
     var page: Int?,
-    var results: ArrayList<TrendingMovieResults>?,
+    var results: List<TrendingMovieResults>,
     @SerializedName("total_pages")
     var totalPages: Int?,
     @SerializedName("total_results")

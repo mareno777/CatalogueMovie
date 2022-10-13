@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
 import id.mareno.cataloguemovie.model.responses.ComingSoonMovieResults
-import id.mareno.cataloguemovie.source.CatalogueRepository
+import id.mareno.cataloguemovie.source.CatalogueRepositoryImpl
 import id.mareno.cataloguemovie.utils.DataDummy
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -29,7 +29,7 @@ class ComingSoonViewModelTest {
     private lateinit var observer: Observer<List<ComingSoonMovieResults>>
 
     @Mock
-    private lateinit var catalogueRepository: CatalogueRepository
+    private lateinit var catalogueRepository: CatalogueRepositoryImpl
 
 
     @Before

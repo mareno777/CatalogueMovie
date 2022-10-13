@@ -1,7 +1,6 @@
 package id.mareno.cataloguemovie.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import id.mareno.cataloguemovie.helper.di.Repository
@@ -14,18 +13,16 @@ class ViewModelFactory private constructor(private val catalogueRepository: Cata
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
 
-        fun getInstance(viewLifecycleOwner: LifecycleOwner, context: Context): ViewModelFactory =
+        fun getInstance(context: Context): ViewModelFactory =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: ViewModelFactory(
-                    Repository.provideRepository(
-                        viewLifecycleOwner, context
-                    )
+                    Repository.provideRepository(context)
                 )
             }
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(catalogueRepository) as T
@@ -38,6 +35,9 @@ class ViewModelFactory private constructor(private val catalogueRepository: Cata
             }
             modelClass.isAssignableFrom(ComingSoonViewModel::class.java) -> {
                 ComingSoonViewModel(catalogueRepository) as T
+            }
+            modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
+                SearchViewModel(catalogueRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

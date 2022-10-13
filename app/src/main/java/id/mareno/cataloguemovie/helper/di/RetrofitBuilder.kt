@@ -7,10 +7,11 @@ const val BASE_URL = "https://api.themoviedb.org/3/"
 
 object RetrofitBuilder {
 
-    fun getApiClient(): Retrofit {
+    fun getApiClient(): CatalogueApi {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+            .create(CatalogueApi::class.java)
     }
 }

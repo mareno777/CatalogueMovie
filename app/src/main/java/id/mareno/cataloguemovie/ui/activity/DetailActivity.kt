@@ -10,17 +10,14 @@ import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.snackbar.Snackbar
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.model.entities.detail.DetailMovieEntity
 import id.mareno.cataloguemovie.model.entities.detail.DetailTvEntity
-import id.mareno.cataloguemovie.utils.EspressoIdlingResource
 import id.mareno.cataloguemovie.viewmodel.DetailMovieViewModel
 import id.mareno.cataloguemovie.viewmodel.ViewModelFactory
-import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,7 +51,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val factory = ViewModelFactory.getInstance(this, this)
+        val factory = ViewModelFactory.getInstance(applicationContext)
         detailMovieViewModel = ViewModelProvider(this, factory)[DetailMovieViewModel::class.java]
 
         val extras = intent.extras
@@ -67,18 +64,16 @@ class DetailActivity : AppCompatActivity() {
             if (type == "movie" && movieId != 0) {
 
                 dataType = MOVIE_TYPE
-                detailMovieViewModel.setSelectedMovieId(movieId)
 
-                detailMovieViewModel.getMovieByRoom().observe(this, { data ->
+                detailMovieViewModel.getMovieByRoom(movieId).observe(this) { data ->
                     if (data == null) {
-                        EspressoIdlingResource.increment()
                         stateUnbookmarked()
                         populateMovieFromApi()
                     } else {
                         stateBookmarked()
                         populateMovieFromRoom(data)
                     }
-                })
+                }
                 tv_seasons_episodes.visibility = View.GONE
             }
 
@@ -86,9 +81,8 @@ class DetailActivity : AppCompatActivity() {
             if (type == "tv" && movieId != 0) {
 
                 dataType = TV_TYPE
-                detailMovieViewModel.setSelectedMovieId(movieId)
 
-                detailMovieViewModel.getTvByRoom().observe(this, { data ->
+                detailMovieViewModel.getTvByRoom(movieId).observe(this) { data ->
                     if (data == null) {
                         stateUnbookmarked()
                         populateTvFromApi()
@@ -96,7 +90,7 @@ class DetailActivity : AppCompatActivity() {
                         stateBookmarked()
                         populateTvFromRoom(data)
                     }
-                })
+                }
             }
         }
 
@@ -159,7 +153,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun populateTvFromApi() {
-        detailMovieViewModel.getDetailTv().observe(this, { tv ->
+        detailMovieViewModel.getDetailTv(movieId).observe(this) { tv ->
             val snackbar =
                 Snackbar.make(linear_layout, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
 
@@ -182,11 +176,11 @@ class DetailActivity : AppCompatActivity() {
             } else {
                 snackbar.show()
             }
-        })
+        }
     }
 
     private fun populateMovieFromApi() {
-        detailMovieViewModel.getDetailMovieFromApi().observe(this, { movie ->
+        detailMovieViewModel.getDetailMovieFromApi(movieId).observe(this) { movie ->
 
             val snackbar =
                 Snackbar.make(linear_layout, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
@@ -207,9 +201,8 @@ class DetailActivity : AppCompatActivity() {
                 genres = movie.genres.toString()
                 link = "movie/${movie.id}"
                 populateDetail()
-                EspressoIdlingResource.decrement()
             }
-        })
+        }
     }
 
     private fun startShimmer(state: Boolean) {
@@ -238,13 +231,13 @@ class DetailActivity : AppCompatActivity() {
 
     private fun bookmarkMovie() {
         val movie = DetailMovieEntity(
-            genres,
-            movieId,
-            plot,
-            image,
-            oldDate,
-            title,
-            rating
+            id = movieId,
+            title = title,
+            overview = plot,
+            posterPath = image,
+            genres = genres,
+            releaseDate = oldDate,
+            voteAverage = rating
         )
         if (!bookmarked) {
             detailMovieViewModel.setBookmark(dataType, true, movie)
@@ -275,7 +268,6 @@ class DetailActivity : AppCompatActivity() {
     private fun populateDetail() {
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/original${image}")
-            .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 15)))
             .into(object : CustomTarget<Drawable>() {
                 override fun onResourceReady(
                     resource: Drawable,
@@ -313,7 +305,7 @@ class DetailActivity : AppCompatActivity() {
             .into(image_inside)
     }
 
-    private fun formatedGenres(rawGenres: String?): String? {
+    private fun formatedGenres(rawGenres: String?): String {
         var genres = rawGenres
         if (genres != null) {
             genres = genres.replace("Genre(", "")

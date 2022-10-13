@@ -8,7 +8,7 @@ import id.mareno.cataloguemovie.model.entities.list.PopularMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.PopularTvsEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingMoviesEntity
 import id.mareno.cataloguemovie.model.entities.list.TrendingTvsEntity
-import id.mareno.cataloguemovie.source.CatalogueRepository
+import id.mareno.cataloguemovie.source.CatalogueRepositoryImpl
 import id.mareno.cataloguemovie.utils.DataDummy
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -29,7 +29,7 @@ class HomeViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var catalogueRepository: CatalogueRepository
+    private lateinit var catalogueRepository: CatalogueRepositoryImpl
 
     @Mock
     private lateinit var observer: Observer<List<TrendingMoviesEntity>>

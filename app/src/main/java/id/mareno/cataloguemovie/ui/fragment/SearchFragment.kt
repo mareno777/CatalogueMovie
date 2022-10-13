@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.miguelcatalan.materialsearchview.MaterialSearchView
 import id.mareno.cataloguemovie.R
 import id.mareno.cataloguemovie.adapter.SearchMovieAdapter
 import id.mareno.cataloguemovie.viewmodel.SearchViewModel
+import id.mareno.cataloguemovie.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
@@ -43,32 +43,20 @@ class SearchFragment : Fragment() {
 
         if (activity != null) {
 
-            search_toolbar.setMenuItem(toolbar.menu.findItem(R.id.action_search))
-
+            val factory = ViewModelFactory.getInstance(requireContext())
             searchViewModel = ViewModelProvider(
                 requireActivity(),
-                ViewModelProvider.NewInstanceFactory()
+                factory
             )[SearchViewModel::class.java]
-            search_toolbar.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean = true
 
-                override fun onQueryTextChange(query: String?): Boolean {
-                    if (query != null) {
-                        searchViewModel.getResultMovie(query)
-                    }
-                    return true
-                }
-
-            })
-
-            searchViewModel.setResultMovie().observe(viewLifecycleOwner, { result ->
+            searchViewModel.setResultMovie().observe(viewLifecycleOwner) { result ->
                 if (result.isEmpty()) {
                     rv_search_movie.visibility = View.GONE
                 } else {
                     rv_search_movie.visibility = View.VISIBLE
                     searchMovieAdapter.setData(result)
                 }
-            })
+            }
         }
     }
 }

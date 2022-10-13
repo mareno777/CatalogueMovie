@@ -144,7 +144,7 @@ object DataDummy {
         for (i in 0 until 21) {
             movie.add(
                 ComingSoonMovieResults(
-                    "http://www.example.com/$i",
+                    "https://www.example.com/$i",
                     listOf(i),
                     i,
                     "Overview $i",
@@ -158,12 +158,12 @@ object DataDummy {
 
     fun generateDetailMovie(): DetailMovieEntity {
         return DetailMovieEntity(
-            "Drama",
             9,
+            "title",
             "overview",
-            "http://example.com",
+            "overView",
+            "https://example.com",
             "19-07-2020",
-            "titile",
             7.2
         )
     }
@@ -177,7 +177,7 @@ object DataDummy {
             "40",
             "6",
             "Overview",
-            "http://example.com/",
+            "https://example.com/",
             7.2
         )
     }

@@ -50,14 +50,14 @@ class FavoriteFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(viewLifecycleOwner, requireContext())
+            val factory = ViewModelFactory.getInstance(requireContext())
             viewModel = ViewModelProvider(requireActivity(), factory)[FavoriteViewModel::class.java]
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.retrieveBookmarkedMovies().observe(viewLifecycleOwner, { movies ->
+        viewModel.retrieveBookmarkedMovies().observe(viewLifecycleOwner) { movies ->
             if (movies == null || movies.isEmpty()) {
                 rv_favorite_movie.visibility = View.GONE
                 tv_empty_movie.visibility = View.VISIBLE
@@ -66,9 +66,9 @@ class FavoriteFragment : Fragment() {
                 tv_empty_movie.visibility = View.GONE
                 bookmarkMovieAdapter.submitList(movies)
             }
-        })
+        }
 
-        viewModel.retrieveBookmarkedTvs().observe(viewLifecycleOwner, { tvShows ->
+        viewModel.retrieveBookmarkedTvs().observe(viewLifecycleOwner) { tvShows ->
             if (tvShows == null || tvShows.isEmpty()) {
                 rv_favorite_tv.visibility = View.GONE
                 tv_empty_tv.visibility = View.VISIBLE
@@ -77,7 +77,7 @@ class FavoriteFragment : Fragment() {
                 rv_favorite_tv.visibility = View.VISIBLE
                 bookmarkTvAdapter.submitList(tvShows)
             }
-        })
+        }
     }
 
 }
